@@ -50,9 +50,11 @@ select = [
   "UP", # pyupgrade
   "D"   # pydocstyle
 ]
+ignore = ["D100", "D104"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
+
 
 [tool.coverage.run]
 branch = true
