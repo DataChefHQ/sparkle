@@ -5,7 +5,7 @@
 groups = ["default", "dev"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:5adb5a4a004550f99d03eaeacf2b1fca057ed4c8ed88dbad83cf316bf358d82d"
+content_hash = "sha256:5ae4bc29820dccafa8efc92f1515989903d07236d53672bd030ced9da882846d"
 
 [[metadata.targets]]
 requires_python = ">=3.11"
@@ -346,6 +346,16 @@ files = [
 ]
 
 [[package]]
+name = "py4j"
+version = "0.10.9.7"
+summary = "Enables Python programs to dynamically access arbitrary Java objects"
+groups = ["default"]
+files = [
+    {file = "py4j-0.10.9.7-py2.py3-none-any.whl", hash = "sha256:85defdfd2b2376eb3abf5ca6474b51ab7e0de341c75a02f46dc9b5976f5a5c1b"},
+    {file = "py4j-0.10.9.7.tar.gz", hash = "sha256:0b6e5315bb3ada5cf62ac651d107bb2ebc02def3dee9d9548e3baac644ea8dbb"},
+]
+
+[[package]]
 name = "pygments"
 version = "2.18.0"
 requires_python = ">=3.8"
@@ -373,6 +383,19 @@ summary = "A library for building flexible command line interfaces"
 groups = ["dev"]
 files = [
     {file = "pyrepl-0.9.0.tar.gz", hash = "sha256:292570f34b5502e871bbb966d639474f2b57fbfcd3373c2d6a2f3d56e681a775"},
+]
+
+[[package]]
+name = "pyspark"
+version = "3.5.2"
+requires_python = ">=3.8"
+summary = "Apache Spark Python API"
+groups = ["default"]
+dependencies = [
+    "py4j==0.10.9.7",
+]
+files = [
+    {file = "pyspark-3.5.2.tar.gz", hash = "sha256:bbb36eba09fa24e86e0923d7e7a986041b90c714e11c6aa976f9791fe9edde5e"},
 ]
 
 [[package]]
