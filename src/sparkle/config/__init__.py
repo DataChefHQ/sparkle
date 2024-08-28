@@ -5,8 +5,8 @@ from .database_config import TableConfig
 
 
 @dataclass(frozen=True)
-class SparkConfig:
-    """Spark Application Configuration."""
+class Config:
+    """Sparkle Application Configuration."""
 
     app_name: str
     app_id: str
