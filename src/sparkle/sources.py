@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from enum import Enum
 from .reader import Reader
+from typing import Any
 
 
 class SourceType(Enum):
@@ -19,9 +20,10 @@ class Source:
     name: str
     address: str
     type: SourceType
-    reader_config: dict[str, any]
+    reader_config: dict[str, Any]
 
-    def from_dict(self, source_dict: dict) -> "Source":
+    @classmethod
+    def from_dict(cls, source_dict: dict) -> "Source":
         """Create a Source object from a dictionary.
 
         Args:
@@ -30,6 +32,7 @@ class Source:
         Returns:
             Source: Source object
         """
+        # TODO Add validation for source_dict, and handle missing keys
         return Source(
             name=source_dict["name"],
             address=source_dict["address"],
@@ -41,7 +44,7 @@ class Source:
 class Sources:
     """Class to simplify source access."""
 
-    def __init__(self, sources: list[SourceType]) -> None:
+    def __init__(self, sources: list[Source]) -> None:
         """Initialize the Sources object.
 
         After initialization, the Sources object will have attributes
@@ -56,14 +59,14 @@ class Sources:
         for source in sources:
             self._add_source(source)
 
-    def _add_source(self, source: SourceType) -> None:
+    def _add_source(self, source: Source) -> None:
         """Add a source to the Sources object.
 
         Args:
             source (SourceType): Source to add
         """
-        if not isinstance(source, SourceType):
-            raise TypeError(f"Expected SourceType, got {type(source)}")
+        if not isinstance(source, Source):
+            raise TypeError(f"Expected Source, got {type(source)}")
 
         setattr(self, source.name, self._dataframe_reader(source))
 
@@ -76,15 +79,16 @@ class Sources:
         Returns:
             Reader: Reader object
         """
-        if source.type == SourceType.hive_table:
-            # TODO Read from Hive
-            pass
-        elif source.type == SourceType.iceberg_table:
-            # TODO Read from Iceberg
-            pass
-        elif source.type == SourceType.kafka_topic:
-            # TODO Read from Kafka
-            pass
-        elif source.type == SourceType.s3_bucket:
-            # TODO Read from S3
-            pass
+        match source.type:
+            case SourceType.hive_table:
+                # TODO Create a Hive reader
+                raise NotImplementedError("Hive reader not implemented")
+            case SourceType.iceberg_table:
+                # TODO Create an Iceberg reader
+                raise NotImplementedError("Iceberg reader not implemented")
+            case SourceType.kafka_topic:
+                # TODO Create a Kafka reader
+                raise NotImplementedError("Kafka reader not implemented")
+            case SourceType.s3_bucket:
+                # TODO Create an S3 reader
+                raise NotImplementedError("S3 reader not implemented")
