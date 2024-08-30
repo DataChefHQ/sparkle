@@ -5,7 +5,9 @@ description = "✨ A meta framework for Apache Spark, helping data engineers to 
 authors = [
     {name = "Reza (Shahin) Khanipour", email = "shahin@DataChef.co"},
 ]
-dependencies = []
+dependencies = [
+    "pyspark>=3.5.2",
+]
 requires-python = ">=3.11"
 readme = "README.md"
 license = {text = "Apache-2.0"}
