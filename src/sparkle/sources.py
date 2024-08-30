@@ -20,7 +20,7 @@ class Source:
     name: str
     address: str
     type: SourceType
-    reader_config: dict[str, Any]
+    reader_config: dict[str, Any] = {}
 
     @classmethod
     def from_dict(cls, source_dict: dict) -> "Source":
