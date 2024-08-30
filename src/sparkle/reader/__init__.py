@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from pyspark.sql import SparkSession
-frpm .config import Config
+from sparkle.config import Config
+
 
 class Reader(ABC):
     """Abstract class for reading data from a source."""
