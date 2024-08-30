@@ -15,5 +15,5 @@ class Config:
     kafka: KafkaConfig | None
     input_database: TableConfig | None
     output_database: TableConfig | None
-    spark_trigger: str = {"once": True}
     iceberg_config: IcebergConfig | None
+    spark_trigger: str = '{"once": True}'

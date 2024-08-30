@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from enum import Enum
 from typing import Any
-from .reader import Reader
+from sparkle.reader import Reader
 
 
 class SourceType(Enum):
