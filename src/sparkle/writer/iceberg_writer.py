@@ -9,8 +9,7 @@ from sparkle.writer import Writer
 
 
 class IcebergWriter(Writer):
-    """
-    A writer class for handling data writing operations to Iceberg tables.
+    """A writer class for handling data writing operations to Iceberg tables.
 
     This class provides methods to configure and write data to Iceberg tables,
     including options for schema evolution and partitioning.
@@ -39,8 +38,7 @@ class IcebergWriter(Writer):
         number_of_partitions: int = 1,
         spark_session: SparkSession | None = SparkSession.getActiveSession(),
     ):
-        """
-        Initializes the IcebergWriter with the specified parameters.
+        """Initializes the IcebergWriter with the specified parameters.
 
         Args:
             database_name (str): The name of the database where the table is located.
@@ -76,8 +74,7 @@ class IcebergWriter(Writer):
         spark: SparkSession,
         **kwargs,
     ) -> "IcebergWriter":
-        """
-        Creates an IcebergWriter instance using a configuration object.
+        """Creates an IcebergWriter instance using a configuration object.
 
         Args:
             config (Config): Configuration object containing the output database and database path.
@@ -107,8 +104,7 @@ class IcebergWriter(Writer):
         )
 
     def qualified_table_name(self, table_name: str) -> str:
-        """
-        Generates a fully qualified table name using the catalog, database, and table name.
+        """Generates a fully qualified table name using the catalog, database, and table name.
 
         Args:
             table_name (str): The name of the table.
@@ -119,8 +115,7 @@ class IcebergWriter(Writer):
         return f"{self.catalog_name}.{self.database_name}.{table_name}"
 
     def table_path(self, table_name: str) -> TablePath:
-        """
-        Generates the table path from the database path and table name.
+        """Generates the table path from the database path and table name.
 
         Args:
             table_name (str): The name of the table.
@@ -134,8 +129,7 @@ class IcebergWriter(Writer):
         self,
         df: DataFrame,
     ) -> None:
-        """
-        Writes a DataFrame to an Iceberg table, optionally handling schema evolution.
+        """Writes a DataFrame to an Iceberg table, optionally handling schema evolution.
 
         Args:
             df (DataFrame): The DataFrame to write.
@@ -178,8 +172,7 @@ class IcebergWriter(Writer):
     def append_with_schema_evolution(
         self, df: DataFrame, table_fqdn: str, writer: DataFrameWriterV2
     ) -> None:
-        """
-        Appends data to a table with schema evolution, adding new columns if needed.
+        """Appends data to a table with schema evolution, adding new columns if needed.
 
         Args:
             df (DataFrame): The DataFrame to append.
