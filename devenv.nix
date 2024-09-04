@@ -45,6 +45,7 @@
 
     python = {
       enable = true;
+      version = "3.10";
       venv = {
         enable = true;
         requirements = ''
@@ -58,6 +59,9 @@
       };
     };
   };
+
+  languages.java.enable = true;
+  languages.java.jdk.package = pkgs.jdk11;
 
   enterShell = ''
     hello
