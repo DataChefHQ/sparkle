@@ -3,7 +3,9 @@ from pyspark.sql import SparkSession, DataFrame
 from pyspark.storagelevel import StorageLevel
 from sparkle.config import Config
 from sparkle.writer import Writer
-from sparkle.data_reader import DataReader
+from sparkle.reader.data_reader import DataReader
+
+PROCESS_TIME_COLUMN = "process_time"
 
 
 class Sparkle(abc.ABC):

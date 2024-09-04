@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from pyspark.sql import SparkSession
+from pyspark.sql import SparkSession, DataFrame
 from sparkle.config import Config
 
 
@@ -29,7 +29,7 @@ class Reader(ABC):
         return cls(config, spark)
 
     @abstractmethod
-    def read(self):
+    def read(self) -> DataFrame:
         """Read data from the source.
 
         Returns:
