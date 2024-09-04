@@ -9,8 +9,9 @@ on:
 jobs:
   tests:
     strategy:
+      fail-fast: false # Prevents the matrix from failing fast
       matrix:
-        os: [macos-latest]
+        os: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
 
     steps:
