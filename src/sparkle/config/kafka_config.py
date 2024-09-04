@@ -24,8 +24,8 @@ class SchemaRegistryConfig:
     credentials: Credentials
 
 
-@dataclass
-class KafkaConfig(frozen=True):
+@dataclass(frozen=True)
+class KafkaConfig:
     """Kafka Configuration."""
 
     bootstrap_servers: str
@@ -34,4 +34,4 @@ class KafkaConfig(frozen=True):
     starting_offset: str = "earliest"
     auth_protocol: str = "SASL_SSL"
     auth_mechanism: str = "PLAIN"
-    schema_registry: SchemaRegistryConfig | None
+    schema_registry: SchemaRegistryConfig | None = None

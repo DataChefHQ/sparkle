@@ -5,7 +5,7 @@ from pyspark.sql import SparkSession
 from sparkle.utils.logger import logger
 
 try:
-    from awsglue.context import GlueContext
+    from awsglue.context import GlueContext  # type: ignore[import]
 except ImportError:
     logger.warning("Could not import pyspark. This is expected if running locally.")
 

@@ -49,7 +49,7 @@ class IcebergWriter(Writer):
             catalog_id (Optional[str], optional): The ID of the catalog. Defaults to None.
             partitions (Optional[List[Column]], optional): List of columns used for partitioning. Defaults to None.
             number_of_partitions (int, optional): Number of partitions for the table. Defaults to 1.
-            spark_session (Optional[SparkSession], optional): The active Spark session. Defaults to the current active session.
+            spark_session (Optional[SparkSession], optional): The active Spark session.
 
         Raises:
             ValueError: If no active Spark session is provided.

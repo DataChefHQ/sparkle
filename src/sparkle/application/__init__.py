@@ -3,7 +3,7 @@ from pyspark.sql import SparkSession, DataFrame
 from pyspark.storagelevel import StorageLevel
 from sparkle.config import Config
 from sparkle.writer import Writer
-from sparkle.reader.data_reader import DataReader
+from sparkle.reader import Reader
 
 PROCESS_TIME_COLUMN = "process_time"
 
@@ -50,17 +50,19 @@ class Sparkle(abc.ABC):
         self.writers = writers
 
     @property
-    def input(self) -> dict[str, DataReader]:
+    def input(self) -> dict[str, Reader]:
         """Dictionary of input DataReaders used in the application.
 
         Returns:
             dict[str, DataReader]: Dictionary of input DataReaders
               used in the application, keyed by source name.
         """
-        return {
-            key: DataReader.with_config(value, config=self.config, spark=self.spark)
-            for key, value in self.config.input.items()
-        }
+        # TODO: Fix this with readers PR
+        # return {
+        #     key: Reader.with_config(value, config=self.config, spark=self.spark)
+        #     for key, value in self.config.input.items()
+        # }
+        return {}
 
     @abc.abstractmethod
     def process(self) -> DataFrame:
