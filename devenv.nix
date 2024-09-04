@@ -45,7 +45,7 @@
 
     python = {
       enable = true;
-      version = "3.10";
+      version = "3.10.14";
       venv = {
         enable = true;
         requirements = ''
