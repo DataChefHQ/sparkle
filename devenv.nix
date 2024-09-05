@@ -61,7 +61,7 @@
   };
 
   languages.java.enable = true;
-  languages.java.jdk.package = pkgs.jdk11;
+  languages.java.jdk.package = pkgs.jdk17;
 
   enterShell = ''
     hello
