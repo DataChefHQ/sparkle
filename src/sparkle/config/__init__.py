@@ -13,7 +13,6 @@ class Config:
     version: str
     database_bucket: str
     kafka: KafkaConfig | None
-    input_database: TableConfig | None
-    output_database: TableConfig | None
-    iceberg_config: IcebergConfig | None
+    hive_table_input: TableConfig | None
+    iceberg_output_config: IcebergConfig | None
     spark_trigger: str = '{"once": True}'
