@@ -1,17 +1,9 @@
-{
-  pkgs,
-  lib,
-  config,
-  inputs,
-  ...
-}:
+{ pkgs, lib, config, inputs, ... }:
 
 {
   name = "sparkle";
   # https://devenv.sh/basics/
-  env = {
-    GREET = "🛠️ Let's hack ";
-  };
+  env = { GREET = "🛠️ Let's hack "; };
 
   # https://devenv.sh/scripts/
   scripts.hello.exec = "echo $GREET";
@@ -34,12 +26,7 @@
   };
 
   # https://devenv.sh/packages/
-  packages = with pkgs; [
-    nixfmt-rfc-style
-    bat
-    jq
-    tealdeer
-  ];
+  packages = with pkgs; [ nixfmt-rfc-style bat jq tealdeer ];
 
   languages = {
 
@@ -61,7 +48,7 @@
   };
 
   languages.java.enable = true;
-  languages.java.jdk.package = pkgs.jdk17;
+  languages.java.jdk.package = pkgs.jdk8; # Java version running on AWS Glue
 
   enterShell = ''
     hello
