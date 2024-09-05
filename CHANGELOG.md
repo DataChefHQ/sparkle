@@ -1,3 +1,10 @@
+## v0.1.1 (2024-09-05)
+
+### Refactor
+
+- **devenv**: downgrade Java to version 8.
+- **devenv**: switch to nixpkgs-unstable.
+
 ## v0.1.0 (2024-09-05)
 
 ### Feat
