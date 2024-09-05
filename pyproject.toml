@@ -5,8 +5,10 @@ description = "✨ A meta framework for Apache Spark, helping data engineers to 
 authors = [
     {name = "Reza (Shahin) Khanipour", email = "shahin@DataChef.co"},
 ]
-dependencies = []
-requires-python = ">=3.11"
+dependencies = [
+    "pyspark==3.3.2"
+]
+requires-python = "==3.10.14"
 readme = "README.md"
 license = {text = "Apache-2.0"}
 
@@ -41,7 +43,7 @@ version_files = [
 
 [tool.ruff]
 line-length = 120
-target-version = "py311"
+target-version = "py310"
 
 [tool.ruff.lint]
 select = [
@@ -50,9 +52,11 @@ select = [
   "UP", # pyupgrade
   "D"   # pydocstyle
 ]
+ignore = ["D100", "D104"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
+
 
 [tool.coverage.run]
 branch = true

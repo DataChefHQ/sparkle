@@ -45,11 +45,13 @@
 
     python = {
       enable = true;
+      version = "3.10.14";
       venv = {
         enable = true;
         requirements = ''
           pdm
-          python-lsp-server
+          python-lsp-server[all]
+          pylint
           importmagic
           epc
           black
@@ -57,6 +59,9 @@
       };
     };
   };
+
+  languages.java.enable = true;
+  languages.java.jdk.package = pkgs.jdk17;
 
   enterShell = ''
     hello
