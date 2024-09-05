@@ -8,4 +8,8 @@ inputs:
     url: github:rrbutani/nix-mk-shell-bin
   nixpkgs:
     url: github:cachix/devenv-nixpkgs/rolling
-
+  nixpkgs-python:
+    url: github:cachix/nixpkgs-python
+    inputs:
+      nixpkgs:
+        follows: nixpkgs

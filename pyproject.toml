@@ -6,9 +6,9 @@ authors = [
     {name = "Reza (Shahin) Khanipour", email = "shahin@DataChef.co"},
 ]
 dependencies = [
-    "pyspark>=3.5.2",
+    "pyspark==3.3.2"
 ]
-requires-python = ">=3.11"
+requires-python = "==3.10.14"
 readme = "README.md"
 license = {text = "Apache-2.0"}
 
@@ -43,7 +43,7 @@ version_files = [
 
 [tool.ruff]
 line-length = 120
-target-version = "py311"
+target-version = "py310"
 
 [tool.ruff.lint]
 select = [
