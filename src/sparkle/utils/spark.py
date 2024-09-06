@@ -1,5 +1,5 @@
 from sparkle.utils.logger import logger
-from pyspark.sql import SparkSession
+from pyspark.sql import SparkSession, functions as F, DataFrame
 
 
 def table_exists(
@@ -37,3 +37,27 @@ def table_exists(
     except Exception as e:
         logger.warning(e)
         return False
+
+
+def to_kafka_dataframe(unique_identifier_column_name: str, df: DataFrame) -> DataFrame:
+    """Generates a DataFrame with Kafka-compatible columns 'key' and 'value'.
+
+    This function transforms the input DataFrame to have a structure required
+    for the Spark Kafka writer API:
+    - 'key': The primary key of the table, used as the Kafka key.
+    - 'value': A JSON representation of the table row.
+
+    Args:
+        unique_identifier_column_name (str): The name of the column to be used as the Kafka key.
+        df (DataFrame): The input DataFrame to be transformed.
+
+    Returns:
+        DataFrame: A transformed DataFrame with 'key' and 'value' columns suitable for Kafka streaming.
+    """
+    return df.select(
+        [
+            # Use PK of table as Kafka key
+            F.col(unique_identifier_column_name).alias("key"),
+            F.to_json(F.struct([df[f] for f in df.columns])).alias("value"),
+        ]
+    )
