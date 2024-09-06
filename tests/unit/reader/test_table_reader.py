@@ -52,7 +52,7 @@ def config():
         database_bucket="test_bucket",
         kafka=None,
         hive_table_input=table_config,
-        iceberg_output_config=None,
+        iceberg_output=None,
     )
 
 

@@ -14,5 +14,5 @@ class Config:
     database_bucket: str
     kafka: KafkaConfig | None
     hive_table_input: TableConfig | None
-    iceberg_output_config: IcebergConfig | None
+    iceberg_output: IcebergConfig | None
     spark_trigger: str = '{"once": True}'

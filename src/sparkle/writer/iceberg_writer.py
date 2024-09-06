@@ -87,18 +87,18 @@ class IcebergWriter(Writer):
         Raises:
             ValueError: If the Iceberg configuration is not provided in the config object.
         """
-        if not config.iceberg_output_config:
+        if not config.iceberg_output:
             raise ValueError("Iceberg output configuration is not provided")
 
         return cls(
-            database_name=config.iceberg_output_config.database_name,
-            database_path=config.iceberg_output_config.database_path,
-            table_name=config.iceberg_output_config.table_name,
-            delete_before_write=config.iceberg_output_config.delete_before_write,
-            catalog_name=config.iceberg_output_config.catalog_name,
-            catalog_id=config.iceberg_output_config.catalog_id,
-            partitions=config.iceberg_output_config.partitions,
-            number_of_partitions=config.iceberg_output_config.number_of_partitions,
+            database_name=config.iceberg_output.database_name,
+            database_path=config.iceberg_output.database_path,
+            table_name=config.iceberg_output.table_name,
+            delete_before_write=config.iceberg_output.delete_before_write,
+            catalog_name=config.iceberg_output.catalog_name,
+            catalog_id=config.iceberg_output.catalog_id,
+            partitions=config.iceberg_output.partitions,
+            number_of_partitions=config.iceberg_output.number_of_partitions,
             spark_session=spark,
             **kwargs,
         )
