@@ -1,3 +1,13 @@
+## v0.2.0 (2024-09-06)
+
+### Feat
+
+- add table reader
+
+### Refactor
+
+- iceberg config name
+
 ## v0.1.2 (2024-09-06)
 
 ### Fix
