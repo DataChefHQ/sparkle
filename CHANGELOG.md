@@ -1,3 +1,10 @@
+## v0.1.2 (2024-09-06)
+
+### Fix
+
+- set minium pyspark version instead of locking to specific version
+- set minimum python version instead of locking to exact version
+
 ## v0.1.1 (2024-09-05)
 
 ### Refactor
