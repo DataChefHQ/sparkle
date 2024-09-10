@@ -1,3 +1,10 @@
+## v0.3.0 (2024-09-10)
+
+### Feat
+
+- Add Kafka stream publisher
+- add dataframe to kafka compatible dataframe transforner
+
 ## v0.2.0 (2024-09-06)
 
 ### Feat
