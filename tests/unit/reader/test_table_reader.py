@@ -50,7 +50,7 @@ def config():
         app_id="test_id",
         version="1.0",
         database_bucket="test_bucket",
-        kafka=None,
+        checkpoints_bucket="test_path",
         hive_table_input=table_config,
         iceberg_output=None,
     )

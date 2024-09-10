@@ -26,7 +26,14 @@
   };
 
   # https://devenv.sh/packages/
-  packages = with pkgs; [ nixfmt-rfc-style bat jq tealdeer ];
+  packages = with pkgs; [
+    nixfmt-rfc-style
+    bat
+    jq
+    tealdeer
+    docker
+    docker-compose
+  ];
 
   languages = {
 
@@ -52,6 +59,7 @@
 
   enterShell = ''
     hello
+    docker compose -f tests/docker-compose.yml up -d --build
     pdm install
   '';
 

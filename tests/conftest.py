@@ -1,4 +1,6 @@
 import pytest
+from typing import Any
+import json
 from pyspark.sql import SparkSession
 from sparkle.application.spark import get_local_session
 
@@ -66,3 +68,24 @@ def teardown_table(spark_session, catalog, database, table):
     """
     yield
     spark_session.sql(f"DROP TABLE IF EXISTS {catalog}.{database}.{table}")
+
+
+def json_to_string(dictionary: dict[str, Any]) -> str:
+    """Converts a dictionary to a compact JSON string.
+
+    This function serializes a Python dictionary into a JSON string
+    with no indentation, ASCII encoding, and no unnecessary whitespace
+    between elements.
+
+    Args:
+        dictionary (dict[str, Any]): The dictionary to be converted to a JSON string.
+
+    Returns:
+        str: A compact JSON string representation of the input dictionary.
+    """
+    return json.dumps(
+        dictionary,
+        indent=0,
+        ensure_ascii=True,
+        separators=(",", ":"),
+    ).replace("\n", "")

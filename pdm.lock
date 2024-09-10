@@ -5,7 +5,7 @@
 groups = ["default", "dev"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:6821cb2a2dbb3b0f97ee70dbdadd3e1199238a38a6c267f3f8c4f80017875312"
+content_hash = "sha256:9bb6988d4d0c767036e880e9b8ac3b7ed1de10311af96bca18e2ca532cb96ebc"
 
 [[metadata.targets]]
 requires_python = "==3.10.14"
@@ -16,6 +16,7 @@ version = "3.5.0"
 requires_python = ">=3.8"
 summary = "Bash tab completion for argparse"
 groups = ["dev"]
+marker = "python_full_version == \"3.10.14\""
 files = [
     {file = "argcomplete-3.5.0-py3-none-any.whl", hash = "sha256:d4bcf3ff544f51e16e54228a7ac7f486ed70ebf2ecfe49a63a91171c76bf029b"},
     {file = "argcomplete-3.5.0.tar.gz", hash = "sha256:4349400469dccfb7950bb60334a680c58d88699bff6159df61251878dc6bf74b"},
@@ -27,6 +28,7 @@ version = "24.2.0"
 requires_python = ">=3.7"
 summary = "Classes Without Boilerplate"
 groups = ["dev"]
+marker = "python_full_version == \"3.10.14\""
 dependencies = [
     "importlib-metadata; python_version < \"3.8\"",
 ]
@@ -41,6 +43,7 @@ version = "3.3.2"
 requires_python = ">=3.7.0"
 summary = "The Real First Universal Charset Detector. Open, modern and actively maintained alternative to Chardet."
 groups = ["dev"]
+marker = "python_full_version == \"3.10.14\""
 files = [
     {file = "charset-normalizer-3.3.2.tar.gz", hash = "sha256:f30c3cb33b24454a82faecaf01b19c18562b1e89558fb6c56de4d9118a032fd5"},
     {file = "charset_normalizer-3.3.2-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:25baf083bf6f6b341f4121c2f3c548875ee6f5339300e08be3f2b2ba1721cdd3"},
@@ -67,6 +70,7 @@ version = "0.4.6"
 requires_python = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*,>=2.7"
 summary = "Cross-platform colored terminal text."
 groups = ["dev"]
+marker = "python_full_version == \"3.10.14\""
 files = [
     {file = "colorama-0.4.6-py2.py3-none-any.whl", hash = "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"},
     {file = "colorama-0.4.6.tar.gz", hash = "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44"},
@@ -78,6 +82,7 @@ version = "3.29.0"
 requires_python = ">=3.8"
 summary = "Python commitizen client tool"
 groups = ["dev"]
+marker = "python_full_version == \"3.10.14\""
 dependencies = [
     "argcomplete<3.6,>=1.12.1",
     "charset-normalizer<4,>=2.1.0",
@@ -103,6 +108,7 @@ version = "7.6.1"
 requires_python = ">=3.8"
 summary = "Code coverage measurement for Python"
 groups = ["dev"]
+marker = "python_full_version == \"3.10.14\""
 files = [
     {file = "coverage-7.6.1-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:b06079abebbc0e89e6163b8e8f0e16270124c154dc6e4a47b413dd538859af16"},
     {file = "coverage-7.6.1-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:cf4b19715bccd7ee27b6b120e7e9dd56037b9c0681dcc1adc9ba9db3d417fa36"},
@@ -125,6 +131,7 @@ extras = ["toml"]
 requires_python = ">=3.8"
 summary = "Code coverage measurement for Python"
 groups = ["dev"]
+marker = "python_full_version == \"3.10.14\""
 dependencies = [
     "coverage==7.6.1",
     "tomli; python_full_version <= \"3.11.0a6\"",
@@ -150,6 +157,7 @@ version = "0.6.2"
 requires_python = ">=3.7"
 summary = "Minimal, easy-to-use, declarative cli tool"
 groups = ["dev"]
+marker = "python_full_version == \"3.10.14\""
 files = [
     {file = "decli-0.6.2-py3-none-any.whl", hash = "sha256:2fc84106ce9a8f523ed501ca543bdb7e416c064917c12a59ebdc7f311a97b7ed"},
     {file = "decli-0.6.2.tar.gz", hash = "sha256:36f71eb55fd0093895efb4f416ec32b7f6e00147dda448e3365cf73ceab42d6f"},
@@ -161,7 +169,7 @@ version = "1.2.2"
 requires_python = ">=3.7"
 summary = "Backport of PEP 654 (exception groups)"
 groups = ["dev"]
-marker = "python_version < \"3.11\""
+marker = "python_full_version == \"3.10.14\""
 files = [
     {file = "exceptiongroup-1.2.2-py3-none-any.whl", hash = "sha256:3111b9d131c238bec2f8f516e123e14ba243563fb135d3fe885990585aa7795b"},
     {file = "exceptiongroup-1.2.2.tar.gz", hash = "sha256:47c2edf7c6738fafb49fd34290706d1a1a2f4d1c6df275526b62cbb4aa5393cc"},
@@ -172,6 +180,7 @@ name = "fancycompleter"
 version = "0.9.1"
 summary = "colorful TAB completion for Python prompt"
 groups = ["dev"]
+marker = "python_full_version == \"3.10.14\""
 dependencies = [
     "pyreadline; platform_system == \"Windows\"",
     "pyrepl>=0.8.2",
@@ -187,6 +196,7 @@ version = "2.0.0"
 requires_python = ">=3.7"
 summary = "brain-dead simple config-ini parsing"
 groups = ["dev"]
+marker = "python_full_version == \"3.10.14\""
 files = [
     {file = "iniconfig-2.0.0-py3-none-any.whl", hash = "sha256:b6a85871a79d2e3b22d2d1b94ac2824226a63c6b741c88f7ae975f18b6778374"},
     {file = "iniconfig-2.0.0.tar.gz", hash = "sha256:2d91e135bf72d31a410b17c16da610a82cb55f6b0477d1a902134b24a455b8b3"},
@@ -198,6 +208,7 @@ version = "3.1.4"
 requires_python = ">=3.7"
 summary = "A very fast and expressive template engine."
 groups = ["dev"]
+marker = "python_full_version == \"3.10.14\""
 dependencies = [
     "MarkupSafe>=2.0",
 ]
@@ -212,6 +223,7 @@ version = "2.1.5"
 requires_python = ">=3.7"
 summary = "Safely add untrusted strings to HTML/XML markup."
 groups = ["dev"]
+marker = "python_full_version == \"3.10.14\""
 files = [
     {file = "MarkupSafe-2.1.5-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:a17a92de5231666cfbe003f0e4b9b3a7ae3afb1ec2845aadc2bacc93ff85febc"},
     {file = "MarkupSafe-2.1.5-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:72b6be590cc35924b02c78ef34b467da4ba07e4e0f0454a2c5907f473fc50ce5"},
@@ -232,6 +244,7 @@ version = "1.11.2"
 requires_python = ">=3.8"
 summary = "Optional static typing for Python"
 groups = ["dev"]
+marker = "python_full_version == \"3.10.14\""
 dependencies = [
     "mypy-extensions>=1.0.0",
     "tomli>=1.1.0; python_version < \"3.11\"",
@@ -253,6 +266,7 @@ version = "1.0.0"
 requires_python = ">=3.5"
 summary = "Type system extensions for programs checked with the mypy type checker."
 groups = ["dev"]
+marker = "python_full_version == \"3.10.14\""
 files = [
     {file = "mypy_extensions-1.0.0-py3-none-any.whl", hash = "sha256:4392f6c0eb8a5668a69e23d168ffa70f0be9ccfd32b5cc2d26a34ae5b844552d"},
     {file = "mypy_extensions-1.0.0.tar.gz", hash = "sha256:75dbf8955dc00442a438fc4d0666508a9a97b6bd41aa2f0ffe9d2f2725af0782"},
@@ -264,6 +278,7 @@ version = "24.1"
 requires_python = ">=3.8"
 summary = "Core utilities for Python packages"
 groups = ["dev"]
+marker = "python_full_version == \"3.10.14\""
 files = [
     {file = "packaging-24.1-py3-none-any.whl", hash = "sha256:5b8f2217dbdbd2f7f384c41c628544e6d52f2d0f53c6d0c3ea61aa5d1d7ff124"},
     {file = "packaging-24.1.tar.gz", hash = "sha256:026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002"},
@@ -274,6 +289,7 @@ name = "pdbpp"
 version = "0.10.3"
 summary = "pdb++, a drop-in replacement for pdb"
 groups = ["dev"]
+marker = "python_full_version == \"3.10.14\""
 dependencies = [
     "fancycompleter>=0.8",
     "pygments",
@@ -290,6 +306,7 @@ version = "1.5.0"
 requires_python = ">=3.8"
 summary = "plugin and hook calling mechanisms for python"
 groups = ["dev"]
+marker = "python_full_version == \"3.10.14\""
 files = [
     {file = "pluggy-1.5.0-py3-none-any.whl", hash = "sha256:44e1ad92c8ca002de6377e165f3e0f1be63266ab4d554740532335b9d75ea669"},
     {file = "pluggy-1.5.0.tar.gz", hash = "sha256:2cffa88e94fdc978c4c574f15f9e59b7f4201d439195c3715ca9e2486f1d0cf1"},
@@ -301,6 +318,7 @@ version = "3.0.36"
 requires_python = ">=3.6.2"
 summary = "Library for building powerful interactive command lines in Python"
 groups = ["dev"]
+marker = "python_full_version == \"3.10.14\""
 dependencies = [
     "wcwidth",
 ]
@@ -314,6 +332,7 @@ name = "py4j"
 version = "0.10.9.5"
 summary = "Enables Python programs to dynamically access arbitrary Java objects"
 groups = ["default"]
+marker = "python_full_version == \"3.10.14\""
 files = [
     {file = "py4j-0.10.9.5-py2.py3-none-any.whl", hash = "sha256:52d171a6a2b031d8a5d1de6efe451cf4f5baff1a2819aabc3741c8406539ba04"},
     {file = "py4j-0.10.9.5.tar.gz", hash = "sha256:276a4a3c5a2154df1860ef3303a927460e02e97b047dc0a47c1c3fb8cce34db6"},
@@ -325,6 +344,7 @@ version = "2.18.0"
 requires_python = ">=3.8"
 summary = "Pygments is a syntax highlighting package written in Python."
 groups = ["dev"]
+marker = "python_full_version == \"3.10.14\""
 files = [
     {file = "pygments-2.18.0-py3-none-any.whl", hash = "sha256:b8e6aca0523f3ab76fee51799c488e38782ac06eafcf95e7ba832985c8e7b13a"},
     {file = "pygments-2.18.0.tar.gz", hash = "sha256:786ff802f32e91311bff3889f6e9a86e81505fe99f2735bb6d60ae0c5004f199"},
@@ -335,7 +355,7 @@ name = "pyreadline"
 version = "2.1"
 summary = "A python implmementation of GNU readline."
 groups = ["dev"]
-marker = "platform_system == \"Windows\""
+marker = "platform_system == \"Windows\" and python_full_version == \"3.10.14\""
 files = [
     {file = "pyreadline-2.1.zip", hash = "sha256:4530592fc2e85b25b1a9f79664433da09237c1a270e4d78ea5aa3a2c7229e2d1"},
 ]
@@ -345,6 +365,7 @@ name = "pyrepl"
 version = "0.9.0"
 summary = "A library for building flexible command line interfaces"
 groups = ["dev"]
+marker = "python_full_version == \"3.10.14\""
 files = [
     {file = "pyrepl-0.9.0.tar.gz", hash = "sha256:292570f34b5502e871bbb966d639474f2b57fbfcd3373c2d6a2f3d56e681a775"},
 ]
@@ -355,6 +376,7 @@ version = "3.3.2"
 requires_python = ">=3.7"
 summary = "Apache Spark Python API"
 groups = ["default"]
+marker = "python_full_version == \"3.10.14\""
 dependencies = [
     "py4j==0.10.9.5",
 ]
@@ -368,6 +390,7 @@ version = "8.3.2"
 requires_python = ">=3.8"
 summary = "pytest: simple powerful testing with Python"
 groups = ["dev"]
+marker = "python_full_version == \"3.10.14\""
 dependencies = [
     "colorama; sys_platform == \"win32\"",
     "exceptiongroup>=1.0.0rc8; python_version < \"3.11\"",
@@ -387,6 +410,7 @@ version = "5.0.0"
 requires_python = ">=3.8"
 summary = "Pytest plugin for measuring coverage."
 groups = ["dev"]
+marker = "python_full_version == \"3.10.14\""
 dependencies = [
     "coverage[toml]>=5.2.1",
     "pytest>=4.6",
@@ -401,6 +425,7 @@ name = "pytest-cover"
 version = "3.0.0"
 summary = "Pytest plugin for measuring coverage. Forked from `pytest-cov`."
 groups = ["dev"]
+marker = "python_full_version == \"3.10.14\""
 dependencies = [
     "pytest-cov>=2.0",
 ]
@@ -414,6 +439,7 @@ name = "pytest-coverage"
 version = "0.0"
 summary = "Pytest plugin for measuring coverage. Forked from `pytest-cov`."
 groups = ["dev"]
+marker = "python_full_version == \"3.10.14\""
 dependencies = [
     "pytest-cover",
 ]
@@ -428,6 +454,7 @@ version = "0.6.0"
 requires_python = ">=3.4"
 summary = "Manage dependencies of tests"
 groups = ["dev"]
+marker = "python_full_version == \"3.10.14\""
 dependencies = [
     "pytest>=3.7.0",
     "setuptools",
@@ -442,6 +469,7 @@ version = "6.0.2"
 requires_python = ">=3.8"
 summary = "YAML parser and emitter for Python"
 groups = ["dev"]
+marker = "python_full_version == \"3.10.14\""
 files = [
     {file = "PyYAML-6.0.2-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:0a9a2848a5b7feac301353437eb7d5957887edbf81d56e903999a75a3d743086"},
     {file = "PyYAML-6.0.2-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:29717114e51c84ddfba879543fb232a6ed60086602313ca38cce623c1d62cfbf"},
@@ -461,6 +489,7 @@ version = "2.0.1"
 requires_python = ">=3.8"
 summary = "Python library to build pretty command line user prompts ⭐️"
 groups = ["dev"]
+marker = "python_full_version == \"3.10.14\""
 dependencies = [
     "prompt-toolkit<=3.0.36,>=2.0",
 ]
@@ -475,6 +504,7 @@ version = "74.1.1"
 requires_python = ">=3.8"
 summary = "Easily download, build, install, upgrade, and uninstall Python packages"
 groups = ["dev"]
+marker = "python_full_version == \"3.10.14\""
 files = [
     {file = "setuptools-74.1.1-py3-none-any.whl", hash = "sha256:fc91b5f89e392ef5b77fe143b17e32f65d3024744fba66dc3afe07201684d766"},
     {file = "setuptools-74.1.1.tar.gz", hash = "sha256:2353af060c06388be1cecbf5953dcdb1f38362f87a2356c480b6b4d5fcfc8847"},
@@ -486,6 +516,7 @@ version = "2.4.0"
 requires_python = ">=3.8"
 summary = "ANSI color formatting for output in terminal"
 groups = ["dev"]
+marker = "python_full_version == \"3.10.14\""
 files = [
     {file = "termcolor-2.4.0-py3-none-any.whl", hash = "sha256:9297c0df9c99445c2412e832e882a7884038a25617c60cea2ad69488d4040d63"},
     {file = "termcolor-2.4.0.tar.gz", hash = "sha256:aab9e56047c8ac41ed798fa36d892a37aca6b3e9159f3e0c24bc64a9b3ac7b7a"},
@@ -497,7 +528,7 @@ version = "2.0.1"
 requires_python = ">=3.7"
 summary = "A lil' TOML parser"
 groups = ["dev"]
-marker = "python_version < \"3.11\""
+marker = "python_full_version == \"3.10.14\""
 files = [
     {file = "tomli-2.0.1-py3-none-any.whl", hash = "sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc"},
     {file = "tomli-2.0.1.tar.gz", hash = "sha256:de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f"},
@@ -509,6 +540,7 @@ version = "0.13.2"
 requires_python = ">=3.8"
 summary = "Style preserving TOML library"
 groups = ["dev"]
+marker = "python_full_version == \"3.10.14\""
 files = [
     {file = "tomlkit-0.13.2-py3-none-any.whl", hash = "sha256:7a974427f6e119197f670fbbbeae7bef749a6c14e793db934baefc1b5f03efde"},
     {file = "tomlkit-0.13.2.tar.gz", hash = "sha256:fff5fe59a87295b278abd31bec92c15d9bc4a06885ab12bcea52c71119392e79"},
@@ -520,6 +552,7 @@ version = "4.12.2"
 requires_python = ">=3.8"
 summary = "Backported and Experimental Type Hints for Python 3.8+"
 groups = ["dev"]
+marker = "python_full_version == \"3.10.14\""
 files = [
     {file = "typing_extensions-4.12.2-py3-none-any.whl", hash = "sha256:04e5ca0351e0f3f85c6853954072df659d0d13fac324d0072316b67d7794700d"},
     {file = "typing_extensions-4.12.2.tar.gz", hash = "sha256:1a7ead55c7e559dd4dee8856e3a88b41225abfe1ce8df57b7c13915fe121ffb8"},
@@ -530,6 +563,7 @@ name = "wcwidth"
 version = "0.2.13"
 summary = "Measures the displayed width of unicode strings in a terminal"
 groups = ["dev"]
+marker = "python_full_version == \"3.10.14\""
 dependencies = [
     "backports-functools-lru-cache>=1.2.1; python_version < \"3.2\"",
 ]
@@ -544,6 +578,7 @@ version = "0.5"
 requires_python = ">=2.7"
 summary = "A tool to programmatically control windows inside X"
 groups = ["dev"]
+marker = "python_full_version == \"3.10.14\""
 dependencies = [
     "attrs",
 ]
