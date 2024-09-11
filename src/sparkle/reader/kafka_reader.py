@@ -1,3 +1,4 @@
+from typing import Any
 from pyspark.sql import SparkSession, DataFrame
 from sparkle.config import Config
 from sparkle.reader.schema_registry import SchemaRegistry
@@ -25,7 +26,7 @@ class KafkaReader:
         schema_registry: SchemaRegistry,
         use_avro: bool = True,
         schema_version: str = "latest",
-        kafka_spark_options: dict[str, str] = {},
+        kafka_spark_options: dict[str, Any] = {},
     ):
         """Initializes KafkaReader with configuration, Spark session, topic, and schema registry.
 

@@ -2,7 +2,7 @@ from typing import Any
 from collections.abc import Generator
 import pytest
 from pyspark.sql import SparkSession, DataFrame
-from confluent_kafka import Producer, KafkaException
+from confluent_kafka import Producer
 from confluent_kafka.admin import AdminClient, NewTopic
 from confluent_kafka.schema_registry import SchemaRegistryClient, Schema
 from confluent_kafka.schema_registry.avro import AvroSerializer
@@ -29,14 +29,9 @@ def kafka_setup() -> Generator[str, None, None]:
     """
     admin_client = AdminClient({"bootstrap.servers": KAFKA_BROKER_URL})
 
-    # Create topic if it does not exist
-    try:
-        admin_client.create_topics(
-            [NewTopic(TEST_TOPIC, num_partitions=1, replication_factor=1)]
-        )
-    except KafkaException as e:
-        if e.args[0].code() != KafkaException.TOPIC_ALREADY_EXISTS:
-            raise e
+    admin_client.create_topics(
+        [NewTopic(TEST_TOPIC, num_partitions=1, replication_factor=1)]
+    )
 
     yield TEST_TOPIC
 
@@ -88,7 +83,7 @@ def avro_serializer(schema_registry_client: SchemaRegistryClient) -> AvroSeriali
     schema = Schema(schema_str, schema_type="AVRO")
     schema_registry_client.register_schema(f"{TEST_TOPIC}-value", schema)
 
-    return AvroSerializer(schema_registry_client, schema_str, lambda obj, ctx: obj)
+    return AvroSerializer(schema_registry_client, schema_str)
 
 
 @pytest.fixture

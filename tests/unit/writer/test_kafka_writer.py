@@ -6,6 +6,7 @@ from sparkle.writer.kafka_writer import KafkaStreamPublisher
 from pyspark.sql.functions import floor, rand
 from pyspark.sql import DataFrame
 from pyspark.sql import SparkSession
+import time
 
 
 @pytest.fixture
@@ -23,7 +24,7 @@ def kafka_config() -> dict[str, Any]:
             "kafka.security.protocol": "PLAINTEXT",
         },
         "checkpoint_location": "./tmp/checkpoint",
-        "kafka_topic": "test_topic",
+        "kafka_topic": "test-kafka-writer-topic",
         "output_mode": "append",
         "unique_identifier_column_name": "id",
         "trigger_once": True,
@@ -108,6 +109,8 @@ def test_kafka_stream_publisher_write(
     except Exception as e:
         pytest.fail(f"KafkaStreamPublisher write failed with exception: {e}")
 
+    # Wait to make sure commit file is created
+    time.sleep(5)
     checkpoint_dir = kafka_config["checkpoint_location"]
     commit_file_path = os.path.join(checkpoint_dir, "commits", "0")
     assert os.path.exists(commit_file_path), "Commit file does not exist"

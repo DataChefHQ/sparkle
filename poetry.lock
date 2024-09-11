@@ -787,6 +787,18 @@ files = [
 ]
 
 [[package]]
+name = "types-confluent-kafka"
+version = "1.2.2"
+requires_python = "<4.0,>=3.8"
+summary = ""
+groups = ["dev"]
+marker = "python_full_version == \"3.10.14\""
+files = [
+    {file = "types_confluent_kafka-1.2.2-py3-none-any.whl", hash = "sha256:61dbcf5223d48593ec925f69ce39f63b5ec79902b3f27e496ff0e7bceeba4baf"},
+    {file = "types_confluent_kafka-1.2.2.tar.gz", hash = "sha256:c1e4095ed8bd87b9f2b05f0b766ad0c2ade4e19da7e41c91542c805639d0bbef"},
+]
+
+[[package]]
 name = "typing-extensions"
 version = "4.12.2"
 description = "Backported and Experimental Type Hints for Python 3.8+"
