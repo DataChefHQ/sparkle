@@ -14,7 +14,10 @@ packages = [
 
 [tool.poetry.dependencies]
 python = ">=3.10.14"
-pyspark = ">=3.3.2"
+# FIXME we need to lock this for now, given the plugins we install are
+# tightly coupled with the versions. Unless we require users to add
+# these plugins on runtime, we can't change this.
+pyspark = "3.3.2"
 
 [tool.poetry.group.dev.dependencies]
 commitizen = "^3.29.0"
