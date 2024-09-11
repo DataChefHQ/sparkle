@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   broker:
     image: apache/kafka:3.8.0
