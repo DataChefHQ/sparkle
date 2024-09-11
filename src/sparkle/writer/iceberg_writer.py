@@ -155,12 +155,10 @@ class IcebergWriter(Writer):
             logger.info(f"Table {table_fqdn} already exists, appending.")
             try:
                 writer.append()
-            except AnalysisException as e:
-                logger.warning("Failed to append to table.")
-                if "too many data columns" not in e.desc:
-                    logger.error("Error is not related to schema evolution.")
-                    raise e
-                logger.info("Schema evolution detected, updating schema.")
+            except AnalysisException:
+                # TODO AnalysisException may have different causes, if
+                # possible, only try schema evolution, if the error is
+                # related to that.
                 self.append_with_schema_evolution(df, table_fqdn, writer)
                 logger.info("Updated table schema successfully.")
         else:
