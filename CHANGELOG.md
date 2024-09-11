@@ -1,3 +1,15 @@
+## v0.3.1 (2024-09-11)
+
+### Fix
+
+- **spark**: lock package version, to ensure they match plugins.
+- **typing**: error "AnalysisException" has no attribute "desc"
+
+### Refactor
+
+- **test**: run development services using devenv.
+- switch to poetry.
+
 ## v0.3.0 (2024-09-10)
 
 ### Feat
