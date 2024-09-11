@@ -1,37 +1,32 @@
-[project]
+[tool.poetry]
 name = "sparkle"
 version = "0.0.0"
 description = "✨ A meta framework for Apache Spark, helping data engineers to focus on solving business problems with highest quality!"
 authors = [
-    {name = "Reza (Shahin) Khanipour", email = "shahin@DataChef.co"},
+  "Reza (Shahin) Khanipour <shahin@datachef.co>",
+  "Farbod Ahmadian <farbod@datachef.co>"
 ]
-dependencies = [
-    "pyspark>=3.3.2"
-]
-requires-python = ">=3.10.14"
 readme = "README.md"
-license = {text = "Apache-2.0"}
-
-[build-system]
-requires = ["pdm-backend"]
-build-backend = "pdm.backend"
-
-[tool.pdm]
-distribution = true
-
-[tool.pdm.version]
-source = "scm"
-path = "src/sparkle/__init__.py"
-
-[tool.pdm.dev-dependencies]
-dev = [
-    "Commitizen>=3.28.0",
-    "mypy>=1.11.0",
-    "pdbpp>=0.10.3",
-    "pytest-coverage>=0.0",
-    "pytest-dependency>=0.6.0",
-    "pytest>=8.3.1",
+license = "Apache-2.0"
+packages = [
+  { include = "sparkle", from = "src" },
 ]
+
+[tool.poetry.dependencies]
+python = ">=3.10.14"
+# FIXME we need to lock this for now, given the plugins we install are
+# tightly coupled with the versions. Unless we require users to add
+# these plugins on runtime, we can't change this.
+pyspark = "3.3.2"
+
+[tool.poetry.group.dev.dependencies]
+commitizen = "^3.29.0"
+pdbpp = "^0.10.3"
+mypy = "^1.11.0"
+pytest-coverage = "^0.0"
+pytest-dependency = "^0.6.0"
+pytest = "^8.3.1"
+
 [tool.commitizen]
 version = "1.0.0"
 update_changelog_on_bump = true
@@ -67,3 +62,8 @@ source = [
 
 [tool.coverage.report]
 skip_empty = true
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "src"
+]

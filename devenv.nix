@@ -1,9 +1,27 @@
-{ pkgs, lib, config, inputs, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  inputs,
+  ...
+}:
 
+let
+  python-packages =
+    p: with p; [
+      pip
+      python-lsp-server
+      epc
+      black
+      pylint
+    ];
+in
 {
   name = "sparkle";
   # https://devenv.sh/basics/
-  env = { GREET = "🛠️ Let's hack "; };
+  env = {
+    GREET = "🛠️ Let's hack ";
+  };
 
   # https://devenv.sh/scripts/
   scripts.hello.exec = "echo $GREET";
@@ -33,6 +51,9 @@
     tealdeer
     docker
     docker-compose
+
+    # Python Dependencies
+    (python3.withPackages python-packages)
   ];
 
   languages = {
@@ -40,16 +61,12 @@
     python = {
       enable = true;
       version = "3.10.14";
-      venv = {
+      poetry = {
         enable = true;
-        requirements = ''
-          pdm
-          python-lsp-server[all]
-          pylint
-          importmagic
-          epc
-          black
-        '';
+        activate.enable = true;
+        install.enable = true;
+        install.allExtras = true;
+        install.groups = [ "dev" ];
       };
     };
   };
@@ -57,17 +74,18 @@
   languages.java.enable = true;
   languages.java.jdk.package = pkgs.jdk8; # Java version running on AWS Glue
 
+  processes = {
+    kafka-test.exec = "docker compose -f tests/docker-compose.yml up --build";
+  };
+
   enterShell = ''
     hello
-    docker compose -f tests/docker-compose.yml up -d --build
-    pdm install
   '';
 
   # https://devenv.sh/pre-commit-hooks/
   pre-commit.hooks = {
-    nixfmt = {
+    nixfmt-rfc-style = {
       enable = true;
-      package = pkgs.nixfmt-rfc-style;
       excludes = [ ".devenv.flake.nix" ];
     };
     yamllint = {
