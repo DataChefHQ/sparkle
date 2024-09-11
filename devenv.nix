@@ -74,9 +74,12 @@ in
   languages.java.enable = true;
   languages.java.jdk.package = pkgs.jdk8; # Java version running on AWS Glue
 
+  processes = {
+    kafka-test.exec = "docker compose -f tests/docker-compose.yml up --build";
+  };
+
   enterShell = ''
     hello
-    docker compose -f tests/docker-compose.yml up -d --build
   '';
 
   # https://devenv.sh/pre-commit-hooks/
