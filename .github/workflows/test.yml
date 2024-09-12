@@ -23,5 +23,10 @@ jobs:
       - name: Install devenv.sh
         run: nix profile install nixpkgs#devenv
 
+      # Add a conditional step for macOS to create the Docker socket symlink
+      - name: Create Docker socket symlink on macOS
+        if: runner.os == 'macOS'
+        run: sudo ln -s ~/.docker/run/docker.sock /var/run/docker.sock
+
       - name: Build the devenv shell and run any pre-commit hooks
         run: devenv test
