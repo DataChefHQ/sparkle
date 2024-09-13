@@ -51,6 +51,7 @@ in
     tealdeer
     docker
     docker-compose
+    colima
 
     # Python Dependencies
     (python3.withPackages python-packages)
@@ -75,7 +76,10 @@ in
   languages.java.jdk.package = pkgs.jdk8; # Java version running on AWS Glue
 
   processes = {
-    kafka-test.exec = "docker compose -f tests/docker-compose.yml up --build";
+    kafka-test.exec = ''
+      colima start --arch x86_64
+      docker compose -f tests/docker-compose.yml up --build
+    '';
   };
 
   enterShell = ''

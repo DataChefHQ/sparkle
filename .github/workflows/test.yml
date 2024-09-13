@@ -17,16 +17,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: setup docker (macos) with Colima
-        if: runner.os == 'macOS'
-        run: |
-          brew install docker docker-compose colima
-          colima delete
-          colima start --arch x86_64
-          echo $SHELL
-          sudo ln -sf $HOME/.colima/default/docker.sock /var/run/docker.sock
-          docker --version
-          curl -s --unix-socket $HOME/.colima/default/docker.sock http/_ping
+      # - name: setup docker (macos) with Colima
+      #   if: runner.os == 'macOS'
+      #   run: |
+      #     brew install docker docker-compose colima
+      #     colima delete
+      #     colima start --arch x86_64
+      #     echo $SHELL
+      #     sudo ln -sf $HOME/.colima/default/docker.sock /var/run/docker.sock
+      #     docker --version
+      #     curl -s --unix-socket $HOME/.colima/default/docker.sock http/_ping
 
       - uses: cachix/install-nix-action@v26
       - uses: cachix/cachix-action@v14
