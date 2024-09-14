@@ -1,3 +1,4 @@
+from time import sleep
 from typing import Any
 from collections.abc import Generator
 import pytest
@@ -110,7 +111,7 @@ def kafka_reader(
         schema_version="latest",
         kafka_spark_options={
             "kafka.bootstrap.servers": KAFKA_BROKER_URL,
-            "auto.offset.reset": "latest",
+            "auto.offset.reset": "earliest",
             "enable.auto.commit": True,
         },
     )
@@ -166,10 +167,11 @@ def test_kafka_reader_avro(
         .start()
     )
 
+    sleep(3)
     produce_avro_message(kafka_producer, kafka_reader.topic, avro_serializer, value)
 
     # Allow the stream to process the data
-    query.awaitTermination(20)
+    query.awaitTermination(30)
 
     # Query the in-memory table
     result_df: DataFrame = spark_session.sql("SELECT * FROM kafka_test")
