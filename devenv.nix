@@ -51,7 +51,6 @@ in
     tealdeer
     docker
     docker-compose
-    colima
 
     # Python Dependencies
     (python3.withPackages python-packages)
@@ -77,7 +76,6 @@ in
 
   processes = {
     kafka-test.exec = ''
-      colima start --arch x86_64
       docker compose -f tests/docker-compose.yml up --build
     '';
   };
