@@ -1,4 +1,17 @@
+from enum import Enum
 from dataclasses import dataclass
+
+
+class SchemaFormat(Enum):
+    """Enumeration for different schema types.
+
+    Attributes:
+        RAW (str): Raw schema type.
+        AVRO (str): Avro schema type.
+    """
+
+    raw = "raw"
+    avro = "avro"
 
 
 @dataclass(frozen=True)
@@ -21,10 +34,12 @@ class SchemaRegistryConfig:
     Attributes:
         url (str): URL of the Schema Registry.
         credentials (Credentials): Credentials for accessing the Schema Registry.
+        schema_format (SchemaFormat): Format of schema to use with the Schema Registry.
     """
 
     url: str
     credentials: Credentials
+    schema_format: SchemaFormat
 
 
 @dataclass(frozen=True)

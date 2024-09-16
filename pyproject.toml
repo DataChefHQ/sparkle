@@ -13,11 +13,13 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.10.14"
+python = ">=3.10.14, <4.0"
 # FIXME we need to lock this for now, given the plugins we install are
 # tightly coupled with the versions. Unless we require users to add
 # these plugins on runtime, we can't change this.
 pyspark = "3.3.2"
+requests = "^2.32.3"
+responses = "^0.25.3"
 
 [tool.poetry.group.dev.dependencies]
 commitizen = "^3.29.0"
@@ -26,6 +28,10 @@ mypy = "^1.11.0"
 pytest-coverage = "^0.0"
 pytest-dependency = "^0.6.0"
 pytest = "^8.3.1"
+pytest-mock = "^3.14.0"
+confluent-kafka = "^2.5.3"
+fastavro = "^1.9.7"
+types-confluent-kafka = "^1.2.2"
 
 [tool.commitizen]
 version = "1.0.0"

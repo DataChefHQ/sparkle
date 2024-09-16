@@ -75,7 +75,9 @@ in
   languages.java.jdk.package = pkgs.jdk8; # Java version running on AWS Glue
 
   processes = {
-    kafka-test.exec = "docker compose -f tests/docker-compose.yml up --build";
+    kafka-test.exec = ''
+      docker compose -f tests/docker-compose.yml up --build
+    '';
   };
 
   enterShell = ''
