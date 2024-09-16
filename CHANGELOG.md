@@ -1,3 +1,24 @@
+## v0.4.0 (2024-09-16)
+
+### Feat
+
+- wait for schema registry to become available
+- add Kafka Avro reader
+- add Kafka Avro reader
+- add avro parser
+- add schema registry class
+
+### Fix
+
+- start from earliest checkpoint
+- use colima on mac
+- wait for schema registry to be ready before running tests
+
+### Refactor
+
+- schema type to config
+- Switch to Poetry from PDM
+
 ## v0.3.1 (2024-09-11)
 
 ### Fix
