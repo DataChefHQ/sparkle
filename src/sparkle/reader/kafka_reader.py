@@ -1,6 +1,7 @@
 from typing import Any
 from pyspark.sql import SparkSession, DataFrame
 from sparkle.config import Config
+from sparkle.config.kafka_config import SchemaFormat
 from sparkle.reader.schema_registry import SchemaRegistry
 from sparkle.utils.spark import parse_by_avro
 
@@ -12,11 +13,12 @@ class KafkaReader:
     for Avro format parsing using a schema registry.
 
     Attributes:
+        spark (SparkSession): Spark session to be used for reading data.
         topic (str): Kafka topic to read from.
         schema_registry (SchemaRegistry): Schema registry client for fetching Avro schemas.
         schema_version (str): Version of the schema to use for Avro parsing.
-        use_avro (bool): Flag indicating whether to parse data using Avro format.
-        kafka_options (dict): Dictionary containing Kafka configuration options for Spark.
+        format_ (SchemaFormat): The format of the schema (e.g., Avro) used for parsing data.
+        kafka_options (Dict[str, Any]): Dictionary containing Kafka configuration options for Spark.
     """
 
     def __init__(
@@ -24,34 +26,33 @@ class KafkaReader:
         spark: SparkSession,
         topic: str,
         schema_registry: SchemaRegistry,
-        use_avro: bool = True,
+        format_: SchemaFormat = SchemaFormat.avro,
         schema_version: str = "latest",
         kafka_spark_options: dict[str, Any] = {},
     ):
         """Initializes KafkaReader with configuration, Spark session, topic, and schema registry.
 
         Args:
-            config (Config): Configuration object containing Kafka settings.
             spark (SparkSession): Spark session to be used for reading data.
             topic (str): Kafka topic to read from.
             schema_registry (SchemaRegistry): Schema registry client for fetching Avro schemas.
-            use_avro (bool, optional): Whether to use Avro format for parsing data. Defaults to True.
+            format_ (SchemaFormat, optional): The format of the schema (e.g., Avro) used for parsing data.
+                Defaults to SchemaFormat.avro.
             schema_version (str, optional): Schema version to use for reading data. Defaults to "latest".
-            kafka_spark_options (dict[str, str], optional): Dictionary containing Kafka configuration options
-                for Spark.
-
-        Raises:
-            ValueError: If Kafka input configuration or Kafka configuration is missing in the provided config.
+            kafka_spark_options (Dict[str, Any], optional): Dictionary containing Kafka configuration options
+                for Spark. Defaults to an empty dictionary.
         """
         self.spark = spark
         self.topic = topic
         self.schema_registry = schema_registry
         self.schema_version = schema_version
-        self.use_avro = use_avro
+        self.format_ = format_
         self.kafka_options = kafka_spark_options
 
     @classmethod
-    def with_config(cls, config: Config, spark: SparkSession, **kwargs):
+    def with_config(
+        cls, config: Config, spark: SparkSession, **kwargs
+    ) -> "KafkaReader":
         """Creates a KafkaReader instance with specific configuration.
 
         Args:
@@ -74,6 +75,7 @@ class KafkaReader:
             spark=spark,
             topic=config.kafka_input.kafka_topic,
             schema_registry=schema_registry,
+            **kwargs
         )
 
     def read_raw(self) -> DataFrame:
@@ -94,12 +96,12 @@ class KafkaReader:
         return df
 
     def read(self) -> DataFrame:
-        """Reads data from the Kafka topic, optionally parsing it using Avro.
+        """Reads data from the Kafka topic, optionally parsing it using the specified format.
 
         Returns:
             DataFrame: A Spark DataFrame containing the data read from the Kafka topic.
         """
-        if self.use_avro:
+        if self.format_ == SchemaFormat.avro:
             return self.read_avro()
         return self.read_raw()
 

@@ -13,6 +13,7 @@ from confluent_kafka.serialization import (
     MessageField,
 )
 from sparkle.reader.kafka_reader import KafkaReader, SchemaRegistry
+from sparkle.config.kafka_config import SchemaFormat
 
 KAFKA_BROKER_URL = "localhost:9092"
 SCHEMA_REGISTRY_URL = "http://localhost:8081"
@@ -107,7 +108,7 @@ def kafka_reader(
         spark=spark_session,
         topic=kafka_setup,
         schema_registry=registry,
-        use_avro=True,
+        format_=SchemaFormat.avro,
         schema_version="latest",
         kafka_spark_options={
             "kafka.bootstrap.servers": KAFKA_BROKER_URL,
