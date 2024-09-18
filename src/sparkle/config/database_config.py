@@ -7,6 +7,3 @@ class TableConfig:
 
     database: str
     table: str
-    bucket: str
-    catalog_name: str = "glue_catalog"
-    catalog_id: str | None = None

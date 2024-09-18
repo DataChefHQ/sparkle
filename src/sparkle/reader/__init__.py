@@ -22,7 +22,11 @@ class Reader(ABC):
         self.spark = spark
 
     @classmethod
-    def with_config(cls, config: Config, spark: SparkSession, **kwargs):
+    def with_config(
+        cls,
+        config: Config,
+        spark: SparkSession,
+    ):
         """Create a Reader object with a specific configuration.
 
         This class method allows the creation of a Reader object using the provided

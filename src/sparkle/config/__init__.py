@@ -1,8 +1,16 @@
 from dataclasses import dataclass
+from enum import Enum
+from sparkle.reader import Reader
 from .kafka_config import KafkaReaderConfig, KafkaWriterConfig
 from .iceberg_config import IcebergConfig
 from .database_config import TableConfig
 import os
+from typing import Type
+
+
+class ExecutionEnvironment(Enum):
+    LOCAL = "LOCAL"
+    AWS = "AWS"
 
 
 @dataclass(frozen=True)
@@ -20,6 +28,8 @@ class Config:
     kafka_output: KafkaWriterConfig | None = None
     hive_table_input: TableConfig | None = None
     iceberg_output: IcebergConfig | None = None
+
+    inputs: dict[str, Type[Reader]] = {}
 
     @property
     def checkpoint_location(self):
