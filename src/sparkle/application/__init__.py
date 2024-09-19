@@ -1,25 +1,13 @@
 import abc
-import os
-from typing import Any, Dict, List
 from pyspark.sql import SparkSession, DataFrame
 from pyspark.storagelevel import StorageLevel
 from pyspark import SparkConf, SparkContext
-from pyspark.sql import SparkSession
-from pyspark.context import SparkContext
 from sparkle.config import Config, ExecutionEnvironment
 from sparkle.writer import Writer
 from sparkle.reader import Reader
 from sparkle.utils.logger import logger
 
-
-_SPARK_EXTENSIONS = [
-    "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions",
-]
-_SPARK_PACKAGES = [
-    "org.apache.iceberg:iceberg-spark-runtime-3.3_2.12:1.3.1",
-    "org.apache.spark:spark-sql-kafka-0-10_2.12:3.3.0",
-    "org.apache.spark:spark-avro_2.12:3.3.0",
-]
+PROCESS_TIME_COLUMN = "process_time"
 
 
 class Sparkle(abc.ABC):
@@ -27,24 +15,32 @@ class Sparkle(abc.ABC):
 
     def __init__(
         self,
-        env: ExecutionEnvironment,
-        spark_config: Dict[str, Any],
         config: Config,
-        writers: List[Writer],
+        writers: list[Writer],
+        spark_extensions: list[str] | None = None,
+        spark_packages: list[str] | None = None,
+        extra_spark_config: dict[str, str] | None = None,
     ):
         """Sparkle's application initializer.
 
         Args:
-            env (ExecutionEnvironment): The environment in which the Spark job is running (LOCAL or AWS).
-            spark_config (Dict[str, Any]): Dictionary containing additional Spark configuration settings.
             config (Config): Configuration object containing application-specific settings.
-            writers (List[Writer]): List of Writer objects used for writing the processed data.
+            writers (list[Writer]): list of Writer objects used for writing the processed data.
+            spark_extensions (list[str], optional): list of Spark session extensions to use.
+            spark_packages (list[str], optional): list of Spark packages to include.
+            extra_spark_config (dict[str, str], optional): Additional Spark configurations
+              to merge with default configurations.
         """
-        self.env = env
-        self.spark_config = spark_config
         self.config = config
         self.writers = writers
-        self.spark_session = self.get_spark_session(env)
+        self.execution_env = config.execution_environment
+        self.spark_config = config.get_spark_config(
+            self.execution_env, extra_spark_config
+        )
+        self.spark_extensions = config.get_spark_extensions(spark_extensions)
+        self.spark_packages = config.get_spark_packages(spark_packages)
+
+        self.spark_session = self.get_spark_session(self.execution_env)
 
     def get_spark_session(self, env: ExecutionEnvironment) -> SparkSession:
         """Create and return a Spark session based on the environment.
@@ -54,6 +50,9 @@ class Sparkle(abc.ABC):
 
         Returns:
             SparkSession: The Spark session configured with the appropriate settings.
+
+        Raises:
+            ValueError: If the environment is unsupported.
         """
         if env == ExecutionEnvironment.LOCAL:
             return self._get_local_session()
@@ -63,49 +62,42 @@ class Sparkle(abc.ABC):
             raise ValueError(f"Unsupported environment: {env}")
 
     def _get_local_session(self) -> SparkSession:
-        """Create a Spark session for the local environment."""
-        ivy_settings_path = os.environ.get("IVY_SETTINGS_PATH", None)
-        LOCAL_CONFIG = {
-            "spark.sql.extensions": ",".join(_SPARK_EXTENSIONS),
-            "spark.jars.packages": ",".join(_SPARK_PACKAGES),
-            "spark.sql.session.timeZone": "UTC",
-            "spark.sql.catalog.local": "org.apache.iceberg.spark.SparkCatalog",
-            "spark.sql.catalog.local.type": "hadoop",
-            "spark.sql.catalog.local.warehouse": "./tmp/warehouse",
-        }
+        """Create a Spark session for the local environment.
 
+        Returns:
+            SparkSession: Configured Spark session for local environment.
+        """
         spark_conf = SparkConf()
-        for key, value in LOCAL_CONFIG.items():
-            spark_conf.set(key, str(value))
         for key, value in self.spark_config.items():
             spark_conf.set(key, str(value))
 
-        spark_session_builder = SparkSession.builder.master("local[*]").appName(
-            "LocalDataProductApp"
+        spark_session_builder = (
+            SparkSession.builder.master("local[*]")
+            .appName(self.config.app_name)
+            .config("spark.sql.extensions", ",".join(self.spark_extensions))
         )
+
+        spark_session_builder = spark_session_builder.config(
+            "spark.jars.packages", ",".join(self.spark_packages)
+        )
+
         for key, value in spark_conf.getAll():
             spark_session_builder = spark_session_builder.config(key, value)
 
         return spark_session_builder.getOrCreate()
 
     def _get_aws_session(self) -> SparkSession:
-        """Create a Spark session for the AWS environment."""
+        """Create a Spark session for the AWS environment.
+
+        Returns:
+            SparkSession: Configured Spark session for AWS environment.
+        """
         try:
-            from awsglue.context import GlueContext
+            from awsglue.context import GlueContext  # type: ignore[import]
         except ImportError:
             logger.error("Could not import GlueContext. Is this running on AWS Glue?")
 
-        AWS_CONFIG = {
-            "spark.sql.extensions": ",".join(_SPARK_EXTENSIONS),
-            "spark.sql.catalog.glue_catalog": "org.apache.iceberg.spark.SparkCatalog",
-            "spark.sql.catalog.glue_catalog.catalog-impl": "org.apache.iceberg.aws.glue.GlueCatalog",
-            "spark.sql.catalog.glue_catalog.io-impl": "org.apache.iceberg.aws.s3.S3FileIO",
-            "spark.sql.catalog.glue_catalog.warehouse": "./tmp/warehouse",
-        }
-
         spark_conf = SparkConf()
-        for key, value in AWS_CONFIG.items():
-            spark_conf.set(key, str(value))
         for key, value in self.spark_config.items():
             spark_conf.set(key, str(value))
 
@@ -113,12 +105,14 @@ class Sparkle(abc.ABC):
         return glue_context.spark_session
 
     @property
-    def input(self) -> Dict[str, Reader]:
+    def input(self) -> dict[str, Reader]:
         """Dictionary of input DataReaders used in the application.
 
         Returns:
-            dict[str, DataReader]: Dictionary of input DataReaders
-              used in the application, keyed by source name.
+            dict[str, DataReader]: dictionary of input DataReaders used in the application, keyed by source name.
+
+        Raises:
+            ValueError: If no inputs are configured.
         """
         if len(self.config.inputs) == 0:
             raise ValueError("No inputs configured.")
@@ -139,8 +133,7 @@ class Sparkle(abc.ABC):
             DataFrame: The resulting DataFrame after processing.
 
         Raises:
-            NotImplementedError: If the subclass does not implement
-              this method.
+            NotImplementedError: If the subclass does not implement this method.
         """
         raise NotImplementedError("process method must be implemented by subclasses")
 
