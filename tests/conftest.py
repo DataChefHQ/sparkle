@@ -1,22 +1,60 @@
 import pytest
 from typing import Any
 import json
+import os
 from pyspark.sql import SparkSession
-from sparkle.application.spark import get_local_session
+from pyspark.conf import SparkConf
 
 
 @pytest.fixture(scope="session")
 def spark_session() -> SparkSession:
-    """Fixture for creating a Spark session.
+    """Create and return a local Spark session configured for use with Iceberg and Kafka.
 
-    This fixture creates a Spark session to be used in the tests. It attempts to get
-    the active Spark session if available; otherwise, it creates a new one using
-    `get_local_session`.
+    This function sets up a local Spark session with specific configurations for Iceberg
+    catalog, session extensions, and other relevant settings needed for local testing
+    and development. It supports optional custom Ivy settings for managing dependencies.
 
     Returns:
-        SparkSession: An active Spark session for use in tests.
+        SparkSession: A configured Spark session instance for local use.
     """
-    return SparkSession.getActiveSession() or get_local_session()
+    _SPARK_EXTENSIONS = [
+        "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions",
+    ]
+
+    _SPARK_PACKAGES = [
+        "org.apache.iceberg:iceberg-spark-runtime-3.3_2.12:1.3.1",
+        "org.apache.spark:spark-sql-kafka-0-10_2.12:3.3.0",
+        "org.apache.spark:spark-avro_2.12:3.3.0",
+    ]
+    ivy_settings_path = os.environ.get("IVY_SETTINGS_PATH", None)
+    LOCAL_CONFIG = {
+        "spark.sql.extensions": ",".join(_SPARK_EXTENSIONS),
+        "spark.jars.packages": ",".join(_SPARK_PACKAGES),
+        "spark.sql.jsonGenerator.ignoreNullFields": False,
+        "spark.sql.session.timeZone": "UTC",
+        "spark.sql.catalog.spark_catalog": "org.apache.iceberg.spark.SparkSessionCatalog",
+        "spark.sql.catalog.spark_catalog.type": "hive",
+        "spark.sql.catalog.local": "org.apache.iceberg.spark.SparkCatalog",
+        "spark.sql.catalog.local.type": "hadoop",
+        "spark.sql.catalog.local.warehouse": "./tmp/warehouse",
+        "spark.sql.defaultCatalog": "local",
+    }
+
+    spark_conf = SparkConf()
+
+    for key, value in LOCAL_CONFIG.items():
+        spark_conf.set(key, str(value))
+
+    spark_session = (
+        SparkSession.builder.master("local[*]")
+        .appName("LocalSparkleApp")
+        .config(conf=spark_conf)
+    )
+
+    if ivy_settings_path:
+        spark_session.config("spark.jars.ivySettings", ivy_settings_path)
+
+    return spark_session.getOrCreate()
 
 
 @pytest.fixture
