@@ -61,14 +61,14 @@ class Sparkle(abc.ABC):
             SparkSession: A Spark session configured for the specified environment.
 
         Raises:
-            ValueError: If an unsupported environment is provided.
+            NotImplementedError: If an unsupported environment is provided.
         """
         if env == ExecutionEnvironment.LOCAL:
             return self._get_local_session()
         elif env == ExecutionEnvironment.AWS:
             return self._get_aws_session()
         else:
-            raise ValueError(f"Unsupported environment: {env}")
+            raise NotImplementedError(f"Unsupported environment: {env}")
 
     def _get_local_session(self) -> SparkSession:
         """Creates a Spark session for local execution.
