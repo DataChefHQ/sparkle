@@ -36,7 +36,7 @@ def spark_session() -> SparkSession:
         "spark.sql.catalog.spark_catalog.type": "hive",
         "spark.sql.catalog.local": "org.apache.iceberg.spark.SparkCatalog",
         "spark.sql.catalog.local.type": "hadoop",
-        "spark.sql.catalog.local.warehouse": "./tmp/warehouse",
+        "spark.sql.catalog.local.warehouse": "./tmp/test_warehouse",
         "spark.sql.defaultCatalog": "local",
     }
 
@@ -47,7 +47,7 @@ def spark_session() -> SparkSession:
 
     spark_session = (
         SparkSession.builder.master("local[*]")
-        .appName("LocalSparkleApp")
+        .appName("LocalTestSparkleApp")
         .config(conf=spark_conf)
     )
 

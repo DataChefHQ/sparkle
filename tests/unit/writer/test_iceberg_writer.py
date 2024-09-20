@@ -10,7 +10,7 @@ from sparkle.writer.iceberg_writer import IcebergWriter
 
 TEST_DB = "default"
 TEST_TABLE = "test_table"
-WAREHOUSE = "/tmp/warehouse"
+WAREHOUSE = "./tmp/test_warehouse"
 CATALOG = "glue_catalog"
 
 
@@ -52,12 +52,16 @@ def partition_df(spark_session):
         {
             "user_id": 1,
             "name": "Bob",
-            PROCESS_TIME_COLUMN: datetime.datetime.fromisoformat("2023-11-03").replace(tzinfo=datetime.timezone.utc),
+            PROCESS_TIME_COLUMN: datetime.datetime.fromisoformat("2023-11-03").replace(
+                tzinfo=datetime.timezone.utc
+            ),
         },
         {
             "user_id": 2,
             "name": "Alice",
-            PROCESS_TIME_COLUMN: datetime.datetime.fromisoformat("2023-11-02").replace(tzinfo=datetime.timezone.utc),
+            PROCESS_TIME_COLUMN: datetime.datetime.fromisoformat("2023-11-02").replace(
+                tzinfo=datetime.timezone.utc
+            ),
         },
     ]
     return spark_session.createDataFrame(data)
@@ -81,7 +85,9 @@ def partition_df_evolved_schema(spark_session):
             "user_id": 1,
             "name": "Bob",
             "new_field": "new_field_value",
-            PROCESS_TIME_COLUMN: datetime.datetime.fromisoformat("2023-11-03").replace(tzinfo=datetime.timezone.utc),
+            PROCESS_TIME_COLUMN: datetime.datetime.fromisoformat("2023-11-03").replace(
+                tzinfo=datetime.timezone.utc
+            ),
         }
     ]
     return spark_session.createDataFrame(data)
@@ -107,7 +113,9 @@ def test_writer_should_write_iceberg(user_dataframe, test_db_path, spark_session
 
     writer.write(user_dataframe)
 
-    assert table_exists(database_name=TEST_DB, table_name=TEST_TABLE, spark=spark_session)
+    assert table_exists(
+        database_name=TEST_DB, table_name=TEST_TABLE, spark=spark_session
+    )
 
 
 def test_write_with_partitions(test_db_path, partition_df, spark_session):
@@ -131,11 +139,21 @@ def test_write_with_partitions(test_db_path, partition_df, spark_session):
 
     writer.write(partition_df)
 
-    assert os.path.exists(os.path.join(test_db_path, TEST_TABLE, "data", f"{PROCESS_TIME_COLUMN}_day=2023-11-02"))
-    assert os.path.exists(os.path.join(test_db_path, TEST_TABLE, "data", f"{PROCESS_TIME_COLUMN}_day=2023-11-03"))
+    assert os.path.exists(
+        os.path.join(
+            test_db_path, TEST_TABLE, "data", f"{PROCESS_TIME_COLUMN}_day=2023-11-02"
+        )
+    )
+    assert os.path.exists(
+        os.path.join(
+            test_db_path, TEST_TABLE, "data", f"{PROCESS_TIME_COLUMN}_day=2023-11-03"
+        )
+    )
 
 
-def test_write_with_partitions_no_partition_column_provided(test_db_path, partition_df, spark_session):
+def test_write_with_partitions_no_partition_column_provided(
+    test_db_path, partition_df, spark_session
+):
     """Test writing data to Iceberg without specifying partitions.
 
     This test verifies that data is written to the Iceberg table without any partitions
@@ -159,7 +177,9 @@ def test_write_with_partitions_no_partition_column_provided(test_db_path, partit
     assert os.path.exists(os.path.join(test_db_path, TEST_TABLE, "data"))
 
 
-def test_write_with_schema_evolution(test_db_path, partition_df, partition_df_evolved_schema, spark_session):
+def test_write_with_schema_evolution(
+    test_db_path, partition_df, partition_df_evolved_schema, spark_session
+):
     """Test writing data to Iceberg with schema evolution.
 
     This test checks that the Iceberg table correctly handles schema evolution by

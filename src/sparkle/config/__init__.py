@@ -1,8 +1,6 @@
-from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
 import os
-from sparkle.reader import Reader
 from .kafka_config import KafkaReaderConfig, KafkaWriterConfig
 from .iceberg_config import IcebergConfig
 from .database_config import TableConfig
@@ -25,7 +23,6 @@ class Config:
         version (str): The version of the application.
         database_bucket (str): The S3 bucket where the database is stored.
         checkpoints_bucket (str): The S3 bucket where the Spark checkpoints are stored.
-        inputs (dict[str, Type[Reader]]): A dictionary mapping input sources to Reader types.
         execution_environment (ExecutionEnvironment): The environment where the app is executed.
         filesystem_scheme (str): The file system scheme, default is 's3a://'.
         spark_trigger (str): The Spark trigger configuration in JSON format.
@@ -40,7 +37,6 @@ class Config:
     version: str
     database_bucket: str
     checkpoints_bucket: str
-    inputs: dict[str, type[Reader]]
     execution_environment: ExecutionEnvironment = ExecutionEnvironment.LOCAL
     filesystem_scheme: str = "s3a://"
     spark_trigger: str = '{"once": True}'
@@ -86,10 +82,6 @@ class Config:
             dict[str, str]: dictionary of Spark configurations for the local environment.
         """
         default_config = {
-            "spark.sql.extensions": "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions",
-            "spark.jars.packages": "org.apache.iceberg:iceberg-spark-runtime-3.3_2.12:1.3.1,"
-            "org.apache.spark:spark-sql-kafka-0-10_2.12:3.3.0,"
-            "org.apache.spark:spark-avro_2.12:3.3.0",
             "spark.sql.session.timeZone": "UTC",
             "spark.sql.catalog.local": "org.apache.iceberg.spark.SparkCatalog",
             "spark.sql.catalog.local.type": "hadoop",
@@ -112,11 +104,10 @@ class Config:
             dict[str, str]: dictionary of Spark configurations for the AWS environment.
         """
         default_config = {
-            "spark.sql.extensions": "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions",
             "spark.sql.catalog.glue_catalog": "org.apache.iceberg.spark.SparkCatalog",
             "spark.sql.catalog.glue_catalog.catalog-impl": "org.apache.iceberg.aws.glue.GlueCatalog",
             "spark.sql.catalog.glue_catalog.io-impl": "org.apache.iceberg.aws.s3.S3FileIO",
-            "spark.sql.catalog.glue_catalog.warehouse": "./tmp/warehouse",
+            # "spark.sql.catalog.glue_catalog.warehouse": "", TODO: Validate if needed
         }
         if extra_config:
             default_config.update(extra_config)
