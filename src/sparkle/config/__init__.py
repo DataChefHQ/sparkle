@@ -9,7 +9,7 @@ from .database_config import TableConfig
 class ExecutionEnvironment(Enum):
     """Enum for defining the execution environment."""
 
-    LOCAL = "LOCAL"
+    GENERIC = "GENERIC"
     AWS = "AWS"
 
 
@@ -37,7 +37,7 @@ class Config:
     version: str
     database_bucket: str
     checkpoints_bucket: str
-    execution_environment: ExecutionEnvironment = ExecutionEnvironment.LOCAL
+    execution_environment: ExecutionEnvironment = ExecutionEnvironment.GENERIC
     filesystem_scheme: str = "s3a://"
     spark_trigger: str = '{"once": True}'
     kafka_input: KafkaReaderConfig | None = None
@@ -70,16 +70,16 @@ class Config:
         )
 
     @staticmethod
-    def get_local_spark_config(
+    def get_generic_spark_config(
         extra_config: dict[str, str] | None = None
     ) -> dict[str, str]:
-        """Provides local Spark configurations and allows merging with additional configurations.
+        """Provides generic Spark configurations and allows merging with additional configurations.
 
         Args:
             extra_config (dict[str, str], optional): Additional configurations to merge with the default ones.
 
         Returns:
-            dict[str, str]: dictionary of Spark configurations for the local environment.
+            dict[str, str]: dictionary of Spark configurations for the generic environment.
         """
         default_config = {
             "spark.sql.session.timeZone": "UTC",
@@ -156,7 +156,7 @@ class Config:
         """Gets the appropriate Spark configurations based on the environment.
 
         Args:
-            env (ExecutionEnvironment): The environment type (either LOCAL or AWS).
+            env (ExecutionEnvironment): The environment type (either GENERIC or AWS).
             extra_config (dict[str, str], optional): Additional configurations to merge with the default ones.
 
         Returns:
@@ -165,8 +165,8 @@ class Config:
         Raises:
             ValueError: If an unsupported environment is provided.
         """
-        if env == ExecutionEnvironment.LOCAL:
-            return Config.get_local_spark_config(extra_config)
+        if env == ExecutionEnvironment.GENERIC:
+            return Config.get_generic_spark_config(extra_config)
         elif env == ExecutionEnvironment.AWS:
             return Config.get_aws_spark_config(extra_config)
         else:

@@ -55,7 +55,7 @@ class Sparkle(abc.ABC):
         """Creates and returns a Spark session based on the environment.
 
         Args:
-            env (ExecutionEnvironment): The environment in which the Spark session is created (LOCAL or AWS).
+            env (ExecutionEnvironment): The environment in which the Spark session is created (GENERIC or AWS).
 
         Returns:
             SparkSession: A Spark session configured for the specified environment.
@@ -63,18 +63,18 @@ class Sparkle(abc.ABC):
         Raises:
             NotImplementedError: If an unsupported environment is provided.
         """
-        if env == ExecutionEnvironment.LOCAL:
-            return self._get_local_session()
+        if env == ExecutionEnvironment.GENERIC:
+            return self._get_generic_session()
         elif env == ExecutionEnvironment.AWS:
             return self._get_aws_session()
         else:
             raise NotImplementedError(f"Unsupported environment: {env}")
 
-    def _get_local_session(self) -> SparkSession:
-        """Creates a Spark session for local execution.
+    def _get_generic_session(self) -> SparkSession:
+        """Creates a Spark session for generic execution.
 
         Returns:
-            SparkSession: A configured Spark session for the local environment.
+            SparkSession: A configured Spark session for the generic environment.
         """
         spark_conf = SparkConf()
         for key, value in self.spark_config.items():
