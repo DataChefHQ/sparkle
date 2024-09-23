@@ -50,8 +50,8 @@ in
   scripts.down.exec = "devenv processes down";
   scripts.down.description = "Stop processes.";
 
-  scripts.tests.exec = "pytest && rm -rf ./tmp";
-  scripts.tests.description = "Run pytest and cleanup.";
+  scripts.tests.exec = "./.test.sh";
+  scripts.tests.description = "Run tests.";
 
   scripts.show.exec = ''
     GREEN="\033[0;32m";

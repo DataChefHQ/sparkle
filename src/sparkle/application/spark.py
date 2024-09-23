@@ -1,7 +1,9 @@
 import os
+
 from pyspark.conf import SparkConf
 from pyspark.context import SparkContext
 from pyspark.sql import SparkSession
+
 from sparkle.utils.logger import logger
 
 try:
@@ -40,7 +42,7 @@ def get_local_session():
         "spark.sql.catalog.spark_catalog.type": "hive",
         "spark.sql.catalog.local": "org.apache.iceberg.spark.SparkCatalog",
         "spark.sql.catalog.local.type": "hadoop",
-        "spark.sql.catalog.local.warehouse": "./tmp/warehouse",
+        "spark.sql.catalog.local.warehouse": "/tmp/warehouse",
         "spark.sql.defaultCatalog": "local",
     }
 
@@ -49,11 +51,7 @@ def get_local_session():
     for key, value in LOCAL_CONFIG.items():
         spark_conf.set(key, str(value))
 
-    spark_session = (
-        SparkSession.builder.master("local[*]")
-        .appName("LocalSparkleApp")
-        .config(conf=spark_conf)
-    )
+    spark_session = SparkSession.builder.master("local[*]").appName("LocalSparkleApp").config(conf=spark_conf)
 
     if ivy_settings_path:
         spark_session.config("spark.jars.ivySettings", ivy_settings_path)

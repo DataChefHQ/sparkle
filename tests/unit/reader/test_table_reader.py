@@ -1,13 +1,15 @@
 import os
+
 import pytest
 from pyspark.sql import DataFrame
+
+from sparkle.config import Config, TableConfig
 from sparkle.reader.table_reader import TableReader
-from sparkle.config import TableConfig, Config
 
 TEST_DB = "test_db"
 TEST_TABLE = "test_table"
 CATALOG = "glue_catalog"
-WAREHOUSE = "./tmp/warehouse"
+WAREHOUSE = "/tmp/warehouse"
 
 
 @pytest.fixture
@@ -104,12 +106,8 @@ def test_read_table(spark_session, test_db_path):
         test_db_path (str): Path to the test database.
     """
     # Create a sample table for testing
-    spark_session.sql(
-        f"CREATE TABLE {CATALOG}.{TEST_DB}.{TEST_TABLE} (id INT, name STRING)"
-    )
-    spark_session.sql(
-        f"INSERT INTO {CATALOG}.{TEST_DB}.{TEST_TABLE} VALUES (1, 'Alice'), (2, 'Bob')"
-    )
+    spark_session.sql(f"CREATE TABLE {CATALOG}.{TEST_DB}.{TEST_TABLE} (id INT, name STRING)")
+    spark_session.sql(f"INSERT INTO {CATALOG}.{TEST_DB}.{TEST_TABLE} VALUES (1, 'Alice'), (2, 'Bob')")
 
     reader = TableReader(
         spark=spark_session,

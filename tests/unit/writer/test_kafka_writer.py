@@ -1,12 +1,13 @@
-import pytest
-from typing import Any
 import os
 import shutil
-from sparkle.writer.kafka_writer import KafkaStreamPublisher
-from pyspark.sql.functions import floor, rand
-from pyspark.sql import DataFrame
-from pyspark.sql import SparkSession
 import time
+from typing import Any
+
+import pytest
+from pyspark.sql import DataFrame, SparkSession
+from pyspark.sql.functions import floor, rand
+
+from sparkle.writer.kafka_writer import KafkaStreamPublisher
 
 
 @pytest.fixture
@@ -23,7 +24,7 @@ def kafka_config() -> dict[str, Any]:
             "kafka.bootstrap.servers": "localhost:9092",
             "kafka.security.protocol": "PLAINTEXT",
         },
-        "checkpoint_location": "./tmp/checkpoint",
+        "checkpoint_location": "/tmp/checkpoint",
         "kafka_topic": "test-kafka-writer-topic",
         "output_mode": "append",
         "unique_identifier_column_name": "id",
