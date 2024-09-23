@@ -70,6 +70,7 @@ source = [
 skip_empty = true
 
 [tool.pytest.ini_options]
+addopts = "-vv --tb=auto --disable-warnings"
 pythonpath = [
   "src"
 ]

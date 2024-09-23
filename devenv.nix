@@ -43,6 +43,33 @@ in
     '';
   };
 
+  # convenient shortcuts
+  scripts.up.exec = "devenv up -d";
+  scripts.up.description = "Start processes in the background.";
+
+  scripts.down.exec = "devenv processes down";
+  scripts.down.description = "Stop processes.";
+
+  scripts.show.exec = ''
+    GREEN="\033[0;32m";
+    YELLOW="\033[33m";
+    NC="\033[0m";
+    echo
+    echo -e "✨ Helper scripts you can run to make your development richer:"
+    echo
+
+    ${pkgs.gnused}/bin/sed -e 's| |••|g' -e 's|=| |' <<EOF | ${pkgs.util-linuxMinimal}/bin/column -t | ${pkgs.gnused}/bin/sed -e "s|^\([^ ]*\)|$(printf "$GREEN")\1$(printf "$NC"):    |" -e "s|^|$(printf "$YELLOW*$NC") |" -e 's|••| |g'
+    ${lib.generators.toKeyValue { } (
+      lib.mapAttrs (name: value: value.description) (
+        lib.filterAttrs (_: value: value.description != "") config.scripts
+      )
+    )}
+    EOF
+
+    echo
+  '';
+  scripts.show.description = "Print this message and exit.";
+
   # https://devenv.sh/packages/
   packages = with pkgs; [
     nixfmt-rfc-style
@@ -82,6 +109,7 @@ in
 
   enterShell = ''
     hello
+    show
   '';
 
   # https://devenv.sh/pre-commit-hooks/
