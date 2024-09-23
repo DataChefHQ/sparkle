@@ -50,9 +50,6 @@ in
   scripts.down.exec = "devenv processes down";
   scripts.down.description = "Stop processes.";
 
-  scripts.tests.exec = "./.test.sh";
-  scripts.tests.description = "Run tests.";
-
   scripts.show.exec = ''
     GREEN="\033[0;32m";
     YELLOW="\033[33m";

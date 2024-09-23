@@ -12,9 +12,6 @@ check_health() {
         return 0
     else
         echo "Container 'schema-registry' is not healthy. Current status: $STATUS"
-        echo "Did you remember to start the processes?"
-        echo "You can do so by running \`up\` in the terminal."
-        echo
         return 1
     fi
 }
@@ -25,7 +22,6 @@ while true; do
         break
     else
         echo "Retrying in 5 seconds..."
-        echo
         sleep 5
     fi
 done
