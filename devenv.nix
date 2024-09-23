@@ -43,6 +43,16 @@ in
     '';
   };
 
+  # convenient shortcuts
+  scripts.up.exec = "devenv up -d";
+  scripts.up.description = "Start processes defined in devenv.nix in the background.";
+
+  scripts.down.exec = "devenv processes down";
+  scripts.down.description = "Stop processes defined in devenv.nix in the background.";
+
+  scripts.tests.exec = "pytest && rm -rf ./tmp";
+  scripts.tests.description = "Run pytest and cleanup.";
+
   # https://devenv.sh/packages/
   packages = with pkgs; [
     nixfmt-rfc-style
@@ -51,7 +61,6 @@ in
     tealdeer
     docker
     docker-compose
-    go-task
 
     # Python Dependencies
     (python3.withPackages python-packages)
