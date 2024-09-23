@@ -179,4 +179,6 @@ devenv.local.nix
 
 ### direnv ###
 .direnv
-.envrc
+
+### vscode ###
+.vscode

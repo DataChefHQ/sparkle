@@ -51,6 +51,7 @@ in
     tealdeer
     docker
     docker-compose
+    go-task
 
     # Python Dependencies
     (python3.withPackages python-packages)
