@@ -1,9 +1,10 @@
-import pytest
-from typing import Any
 import json
 import os
-from pyspark.sql import SparkSession
+from typing import Any
+
+import pytest
 from pyspark.conf import SparkConf
+from pyspark.sql import SparkSession
 
 
 @pytest.fixture(scope="session")
@@ -45,11 +46,7 @@ def spark_session() -> SparkSession:
     for key, value in LOCAL_CONFIG.items():
         spark_conf.set(key, str(value))
 
-    spark_session = (
-        SparkSession.builder.master("local[*]")
-        .appName("LocalTestSparkleApp")
-        .config(conf=spark_conf)
-    )
+    spark_session = SparkSession.builder.master("local[*]").appName("LocalTestSparkleApp").config(conf=spark_conf)
 
     if ivy_settings_path:
         spark_session.config("spark.jars.ivySettings", ivy_settings_path)
@@ -71,21 +68,11 @@ def user_dataframe(spark_session: SparkSession):
         pyspark.sql.DataFrame: A Spark DataFrame with sample user data.
     """
     data = [
-        {
-            "name": "John",
-            "surname": "Doe",
-            "phone": "12345",
-            "email": "john@test.com",
-        },
-        {
-            "name": "Jane",
-            "surname": "Doe",
-            "phone": "12345",
-            "email": "jane.doe@test.com",
-        },
+        ["John", "Doe", "12345", "john@test.com"],
+        ["Jane", "Doe", "12345", "jane.doe@test.com"],
     ]
-
-    return spark_session.createDataFrame(data)
+    schema = ["name", "surname", "phone", "email"]
+    return spark_session.createDataFrame(data, schema=schema)
 
 
 @pytest.fixture
