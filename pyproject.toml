@@ -80,3 +80,7 @@ pythonpath = [
 markers = [
   "wip: mark tests as work in progress",
 ]
+
+[[tool.mypy.overrides]]
+module = "chispa.*"
+ignore_missing_imports = true
