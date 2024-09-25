@@ -144,6 +144,20 @@ files = [
 ]
 
 [[package]]
+name = "chispa"
+version = "0.10.1"
+description = "Pyspark test helper library"
+optional = false
+python-versions = "<4.0,>=3.8"
+files = [
+    {file = "chispa-0.10.1-py3-none-any.whl", hash = "sha256:f040d6eaaa9f6165a31ff675c44cad0778bb260d833f35f023610357b5f9b5ab"},
+    {file = "chispa-0.10.1.tar.gz", hash = "sha256:7ccdbfcc187c3d630efcccc853aa7a7797d3e02a4ee16278c9aeb66fe24c88ca"},
+]
+
+[package.dependencies]
+prettytable = ">=3.10.2,<4.0.0"
+
+[[package]]
 name = "colorama"
 version = "0.4.6"
 description = "Cross-platform colored terminal text."
@@ -614,6 +628,23 @@ dev = ["pre-commit", "tox"]
 testing = ["pytest", "pytest-benchmark"]
 
 [[package]]
+name = "prettytable"
+version = "3.11.0"
+description = "A simple Python library for easily displaying tabular data in a visually appealing ASCII table format"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "prettytable-3.11.0-py3-none-any.whl", hash = "sha256:aa17083feb6c71da11a68b2c213b04675c4af4ce9c541762632ca3f2cb3546dd"},
+    {file = "prettytable-3.11.0.tar.gz", hash = "sha256:7e23ca1e68bbfd06ba8de98bf553bf3493264c96d5e8a615c0471025deeba722"},
+]
+
+[package.dependencies]
+wcwidth = "*"
+
+[package.extras]
+tests = ["pytest", "pytest-cov", "pytest-lazy-fixtures"]
+
+[[package]]
 name = "prompt-toolkit"
 version = "3.0.36"
 description = "Library for building powerful interactive command lines in Python"
@@ -1032,4 +1063,4 @@ test = ["pytest"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10.14, <4.0"
-content-hash = "d7cec6d06cd50cd6e3908959695f4785d2bfe9cbb0a8f0b93f179d75cba0af57"
+content-hash = "404af9e2eb8f022cbb637b551e3526ec6ac2a09ef25b369abf03cf0cbd3305ba"
