@@ -1,14 +1,14 @@
 import pytest
-from sparkle.writer.iceberg_writer import IcebergWriter
-from sparkle.utils.spark import table_exists
-from sparkle.utils.spark import to_kafka_dataframe
-from tests.conftest import json_to_string
-from pyspark.sql import DataFrame, SparkSession, Row
-from pyspark.sql.functions import col, lit, struct
-from sparkle.reader.schema_registry import SchemaRegistry
-from sparkle.utils.spark import parse_by_avro
-from pyspark.sql.avro.functions import to_avro
+from chispa.dataframe_comparer import assert_df_equality
+from pyspark.sql import DataFrame, Row, SparkSession
 from pyspark.sql import functions as F
+from pyspark.sql.avro.functions import to_avro
+from pyspark.sql.functions import col, lit, struct
+
+from sparkle.reader.schema_registry import SchemaRegistry
+from sparkle.utils.spark import parse_by_avro, table_exists, to_kafka_dataframe
+from sparkle.writer.iceberg_writer import IcebergWriter
+from tests.conftest import json_to_string
 
 
 @pytest.mark.parametrize(
@@ -58,10 +58,10 @@ def test_generate_kafka_acceptable_dataframe(user_dataframe: DataFrame, spark_se
             "key": "john@test.com",
             "value": json_to_string(
                 {
-                    "email": "john@test.com",
                     "name": "John",
-                    "phone": "12345",
                     "surname": "Doe",
+                    "phone": "12345",
+                    "email": "john@test.com",
                 },
             ),
         },
@@ -69,33 +69,31 @@ def test_generate_kafka_acceptable_dataframe(user_dataframe: DataFrame, spark_se
             "key": "jane.doe@test.com",
             "value": json_to_string(
                 {
-                    "email": "jane.doe@test.com",
                     "name": "Jane",
-                    "phone": "12345",
                     "surname": "Doe",
+                    "phone": "12345",
+                    "email": "jane.doe@test.com",
                 },
             ),
         },
     ]
-    expected_df = spark_session.createDataFrame(
-        expected_result, schema=["key", "value"]
-    )
+    expected_df = spark_session.createDataFrame(expected_result, schema=["key", "value"])
 
-    df = to_kafka_dataframe("email", user_dataframe)
+    actual_df = to_kafka_dataframe("email", user_dataframe)
 
-    assert df.count() == expected_df.count()
-    assert expected_df.join(df, ["key"]).count() == expected_df.count()
-    assert expected_df.join(df, ["value"]).count() == expected_df.count()
+    assert_df_equality(expected_df, actual_df)
 
 
 @pytest.fixture
 def mock_schema_registry(mocker):
     """Fixture to create a mock schema registry client."""
     mock = mocker.Mock(spec=SchemaRegistry)
+    # fmt: off
     mock.cached_schema.return_value = (
         '{"type": "record", "name": "test", "fields":'
         '[{"name": "test", "type": "string"}]}'
     )
+    # fmt: on
     return mock
 
 
@@ -122,7 +120,8 @@ def test_parse_by_avro(spark_session: SparkSession, mock_schema_registry):
 
     # Add magic byte and schema ID to simulate real Kafka Avro messages
     kafka_data = kafka_data.withColumn(
-        "value", F.concat(F.lit(b"\x00\x00\x00\x00\x01"), col("value"))
+        "value",
+        F.concat(F.lit(b"\x00\x00\x00\x00\x01"), col("value")),
     )
 
     # Create the transformer function using the parse_by_avro function

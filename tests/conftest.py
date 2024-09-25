@@ -1,10 +1,14 @@
+import io
 import json
+import logging
 import os
+import shutil
+from contextlib import redirect_stdout
 from typing import Any
 
 import pytest
 from pyspark.conf import SparkConf
-from pyspark.sql import SparkSession
+from pyspark.sql import DataFrame, SparkSession
 
 
 @pytest.fixture(scope="session")
@@ -52,6 +56,41 @@ def spark_session() -> SparkSession:
         spark_session.config("spark.jars.ivySettings", ivy_settings_path)
 
     return spark_session.getOrCreate()
+
+
+@pytest.fixture(scope="session")
+def checkpoint_directory():
+    """Fixture to validate and remove the checkpoint directory after tests.
+
+    To avoid test failures due to non-unique directories, the user should add a
+    subdirectory to this path when using this fixture.
+
+    Example:
+        >>> dir = checkpoint_directory + subdir
+    """
+    checkpoint_dir = "/tmp/checkpoint/"
+
+    yield checkpoint_dir
+
+    # Remove the checkpoint directory if it exists
+    if os.path.exists(checkpoint_dir):
+        shutil.rmtree(checkpoint_dir)
+        print(f"Checkpoint directory {checkpoint_dir} has been removed.")
+
+
+@pytest.fixture(scope="session", autouse=True)
+def cleanup_logging_handlers():
+    """Fixture to cleanup logging handlers after tests.
+
+    Prevents logging errors at the end of the report.
+    Taken from [here](https://github.com/pytest-dev/pytest/issues/5502#issuecomment-1803676152)
+    """
+    try:
+        yield
+    finally:
+        for handler in logging.root.handlers[:]:
+            if isinstance(handler, logging.StreamHandler):
+                logging.root.removeHandler(handler)
 
 
 @pytest.fixture
@@ -114,3 +153,17 @@ def json_to_string(dictionary: dict[str, Any]) -> str:
         ensure_ascii=True,
         separators=(",", ":"),
     ).replace("\n", "")
+
+
+def log_spark_dataframe(df: DataFrame, *, truncate: bool = False, name: str = "") -> None:
+    """Logs the contents of a Spark DataFrame in tabular format.
+
+    Useful when Pytest is configured to capture only logs, so `df.show()` won't work.
+
+    Example:
+        >>> log_spark_dataframe(df, name="My DataFrame")
+    """
+    buffer = io.StringIO()
+    with redirect_stdout(buffer):
+        df.show(truncate=truncate)
+    logging.info(f"\n{name}\n{buffer.getvalue()}")
