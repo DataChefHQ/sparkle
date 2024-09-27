@@ -72,7 +72,12 @@ source = [
 skip_empty = true
 
 [tool.pytest.ini_options]
-addopts = "-v --tb=short --disable-warnings -ra --no-header --show-capture=log"
+addopts = "-v --tb=short -ra --no-header --show-capture=log"
+# -v:                  add sufficient verbosity without being overwhelming
+# --tb=short:          show failing line and related context without printing all function code
+# -ra:                 small recap at the end of pytest outputs excluding passed tests
+# --no-header:         skip pytest header
+# --show-capture=log:  reduce output clutter by capturing only logging calls
 log_level = "info"
 pythonpath = [
   "src"
