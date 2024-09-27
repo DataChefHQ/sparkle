@@ -75,7 +75,9 @@ def checkpoint_directory():
     # Remove the checkpoint directory if it exists
     if os.path.exists(checkpoint_dir):
         shutil.rmtree(checkpoint_dir)
-        print(f"Checkpoint directory {checkpoint_dir} has been removed.")
+        logger.info(f"Checkpoint directory {checkpoint_dir} has been removed.")
+    else:
+        logger.warn(f"Checkpoint directory {checkpoint_dir} was not found.")
 
 
 @pytest.fixture(scope="session", autouse=True)
