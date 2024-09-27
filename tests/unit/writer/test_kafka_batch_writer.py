@@ -1,3 +1,4 @@
+import logging
 from typing import Any
 
 import pytest
@@ -40,6 +41,7 @@ def kafka_setup():
     kafka_client.create_topics([NewTopic(TOPIC, num_partitions=1, replication_factor=1)])
     yield
     kafka_client.delete_topics([TOPIC])
+    logging.info("Deleted Kafka topic %s", TOPIC)
 
 
 def test_kafka_batch_publisher_write(
