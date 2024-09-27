@@ -183,7 +183,7 @@ class KafkaBatchPublisher(Writer):
         # Convert the DataFrame to a Kafka-friendly format
         kafka_df = to_kafka_dataframe(self.unique_identifier_column_name, df)
 
-        if "key" not in kafka_df.columns or "value" not in kafka_df.columns:
+        if set(kafka_df.columns) != {"key", "value"}
             raise KeyError(
                 "The DataFrame must contain 'key' and 'value' columns. "
                 "Ensure that `to_kafka_dataframe` transformation is correctly applied."
