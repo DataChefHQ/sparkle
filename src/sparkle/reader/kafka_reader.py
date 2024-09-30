@@ -47,7 +47,7 @@ class KafkaReader:
         self.schema_registry = schema_registry
         self.schema_version = schema_version
         self.format_ = format_
-        self.kafka_options = kafka_spark_options
+        self.kafka_spark_options = kafka_spark_options
 
     @classmethod
     def with_config(
@@ -90,7 +90,7 @@ class KafkaReader:
         df = (
             self.spark.readStream.format("kafka")
             .option("subscribe", self.topic)
-            .options(**self.kafka_options)
+            .options(**self.kafka_spark_options)
             .load()
         )
         return df

@@ -51,7 +51,11 @@ def get_local_session():
     for key, value in LOCAL_CONFIG.items():
         spark_conf.set(key, str(value))
 
-    spark_session = SparkSession.builder.master("local[*]").appName("LocalSparkleApp").config(conf=spark_conf)
+    spark_session = (
+        SparkSession.builder.master("local[*]")
+        .appName("LocalSparkleApp")
+        .config(conf=spark_conf)
+    )
 
     if ivy_settings_path:
         spark_session.config("spark.jars.ivySettings", ivy_settings_path)
