@@ -1,3 +1,18 @@
+## v0.5.0 (2024-09-30)
+
+### Fix
+
+- not supported environment exception
+
+### Refactor
+
+- rename kafka_options to kafka_spark_options
+- rename local to generic
+- accept readers in Sparkle class
+- delete local spark session
+- Spark configuration
+- let Sparke create Spark session
+
 ## v0.4.0 (2024-09-16)
 
 ### Feat
