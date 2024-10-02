@@ -37,7 +37,7 @@ types-confluent-kafka = "^1.2.2"
 version = "1.0.0"
 update_changelog_on_bump = true
 version_provider = "scm"
-tag_format = "v$major.$minor.$patch$prerelease"
+tag_format = "v$version"
 version_files = [
     "pyproject.toml:version",
     "src/sparkle/__init__.py"
