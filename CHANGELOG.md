@@ -1,3 +1,10 @@
+## v0.5.1 (2024-10-02)
+
+### Fix
+
+- regression on #21.
+- package version in the package.
+
 ## v0.5.0 (2024-09-30)
 
 ### Fix
