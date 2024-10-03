@@ -1,5 +1,4 @@
 import os
-import shutil
 import time
 from typing import Any
 
@@ -9,9 +8,11 @@ from pyspark.sql.functions import floor, rand
 
 from sparkle.writer.kafka_writer import KafkaStreamPublisher
 
+TOPIC = "test-kafka-stream-writer-topic"
+
 
 @pytest.fixture
-def kafka_config() -> dict[str, Any]:
+def kafka_config(checkpoint_directory) -> dict[str, Any]:
     """Fixture that provides Kafka configuration options for testing.
 
     Returns:
@@ -24,8 +25,8 @@ def kafka_config() -> dict[str, Any]:
             "kafka.bootstrap.servers": "localhost:9092",
             "kafka.security.protocol": "PLAINTEXT",
         },
-        "checkpoint_location": "/tmp/checkpoint",
-        "kafka_topic": "test-kafka-writer-topic",
+        "checkpoint_location": checkpoint_directory + TOPIC,
+        "kafka_topic": TOPIC,
         "output_mode": "append",
         "unique_identifier_column_name": "id",
         "trigger_once": True,
@@ -51,32 +52,10 @@ def rate_stream_dataframe(spark_session) -> DataFrame:
     return rate_df
 
 
-@pytest.fixture
-def cleanup_checkpoint_directory(kafka_config):
-    """Fixture that validates and removes the checkpoint directory after tests.
-
-    Args:
-        kafka_config (dict[str, any]): The Kafka configuration dictionary.
-
-    Yields:
-        None: This fixture ensures that the checkpoint directory specified in the
-        Kafka configuration is removed after test execution if it exists.
-    """
-    checkpoint_dir = kafka_config["checkpoint_location"]
-
-    yield
-
-    # Remove the checkpoint directory if it exists
-    if os.path.exists(checkpoint_dir):
-        shutil.rmtree(checkpoint_dir)
-        print(f"Checkpoint directory {checkpoint_dir} has been removed.")
-
-
 def test_kafka_stream_publisher_write(
     spark_session: SparkSession,
     rate_stream_dataframe,
     kafka_config: dict[str, Any],
-    cleanup_checkpoint_directory,
 ):
     """Test the write method of KafkaStreamPublisher by publishing to Kafka.
 
@@ -88,7 +67,6 @@ def test_kafka_stream_publisher_write(
         spark_session (SparkSession): The Spark session used for the test.
         rate_stream_dataframe (DataFrame): The streaming DataFrame to be published.
         kafka_config (dict[str, any]): Kafka configuration options.
-        cleanup_checkpoint_directory: Fixture to clean up the checkpoint directory.
 
     Raises:
         AssertionError: If the commit file does not exist after the stream terminates.

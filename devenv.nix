@@ -15,6 +15,7 @@ let
       black
       pylint
     ];
+  compose-path = "./tests/docker-compose.yml";
 in
 {
   name = "sparkle";
@@ -49,6 +50,9 @@ in
 
   scripts.down.exec = "devenv processes down";
   scripts.down.description = "Stop processes.";
+
+  scripts.cleanup.exec = "docker compose -f ${compose-path} rm -vf";
+  scripts.cleanup.description = "Remove unused docker containers and volumes.";
 
   scripts.show.exec = ''
     GREEN="\033[0;32m";
@@ -103,7 +107,7 @@ in
 
   processes = {
     kafka-test.exec = ''
-      docker compose -f tests/docker-compose.yml up --build
+      docker compose -f ${compose-path} up --build
     '';
   };
 

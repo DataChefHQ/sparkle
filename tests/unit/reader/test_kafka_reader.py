@@ -1,19 +1,22 @@
+import logging
+from collections.abc import Generator
 from time import sleep
 from typing import Any
-from collections.abc import Generator
+
 import pytest
-from pyspark.sql import SparkSession, DataFrame
 from confluent_kafka import Producer
 from confluent_kafka.admin import AdminClient, NewTopic
-from confluent_kafka.schema_registry import SchemaRegistryClient, Schema
+from confluent_kafka.schema_registry import Schema, SchemaRegistryClient
 from confluent_kafka.schema_registry.avro import AvroSerializer
 from confluent_kafka.serialization import (
-    StringSerializer,
-    SerializationContext,
     MessageField,
+    SerializationContext,
+    StringSerializer,
 )
-from sparkle.reader.kafka_reader import KafkaReader, SchemaRegistry
+from pyspark.sql import DataFrame, SparkSession
+
 from sparkle.config.kafka_config import SchemaFormat
+from sparkle.reader.kafka_reader import KafkaReader, SchemaRegistry
 
 KAFKA_BROKER_URL = "localhost:9092"
 SCHEMA_REGISTRY_URL = "http://localhost:8081"
@@ -31,14 +34,13 @@ def kafka_setup() -> Generator[str, None, None]:
     """
     admin_client = AdminClient({"bootstrap.servers": KAFKA_BROKER_URL})
 
-    admin_client.create_topics(
-        [NewTopic(TEST_TOPIC, num_partitions=1, replication_factor=1)]
-    )
+    admin_client.create_topics([NewTopic(TEST_TOPIC, num_partitions=1, replication_factor=1)])
 
     yield TEST_TOPIC
 
     # Cleanup
     admin_client.delete_topics([TEST_TOPIC])
+    logging.info("Deleted Kafka topic %s", TEST_TOPIC)
 
 
 @pytest.fixture
@@ -135,9 +137,7 @@ def produce_avro_message(
     string_serializer = StringSerializer("utf_8")
     producer.produce(
         topic=topic,
-        key=string_serializer(
-            value["name"], SerializationContext(topic, MessageField.KEY)
-        ),
+        key=string_serializer(value["name"], SerializationContext(topic, MessageField.KEY)),
         value=avro_serializer(value, SerializationContext(topic, MessageField.VALUE)),
     )
     producer.flush()
