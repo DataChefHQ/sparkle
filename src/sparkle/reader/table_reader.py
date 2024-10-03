@@ -1,9 +1,10 @@
 from pyspark.sql import SparkSession, DataFrame
 from sparkle.config import Config
 from sparkle.utils.logger import logger
+from sparkle.reader import Reader
 
 
-class TableReader:
+class TableReader(Reader):
     """A class for reading tables from a specified catalog using Spark.
 
     The `TableReader` class provides methods to read data from a table in a specified
@@ -44,7 +45,7 @@ class TableReader:
 
     @classmethod
     def with_config(
-        cls, spark: SparkSession, config: Config, **kwargs
+        cls, config: Config, spark: SparkSession, **kwargs
     ) -> "TableReader":
         """Creates a TableReader instance using a configuration object.
 

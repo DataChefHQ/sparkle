@@ -4,9 +4,10 @@ from sparkle.config import Config
 from sparkle.config.kafka_config import SchemaFormat
 from sparkle.reader.schema_registry import SchemaRegistry
 from sparkle.utils.spark import parse_by_avro
+from sparkle.reader import Reader
 
 
-class KafkaReader:
+class KafkaReader(Reader):
     """KafkaReader is a reader for streaming data from Kafka using Spark.
 
     This class allows you to read data from a specified Kafka topic, with support
