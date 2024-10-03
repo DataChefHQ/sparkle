@@ -1,3 +1,16 @@
+## v0.6.0 (2024-10-03)
+
+### Feat
+
+- **kafkaWriter**: add batch publisher
+- add chispa pkg for easy spark DF comparisons
+- add kafka-ui service so I can see what goes on
+
+### Fix
+
+- add missing colon
+- check if Kafka columns in writer are *exactly* {key, value}
+
 ## v0.5.1 (2024-10-02)
 
 ### Fix

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "sparkle"
-version = "0.5.1"
+version = "0.6.0"
 description = "✨ A meta framework for Apache Spark, helping data engineers to focus on solving business problems with highest quality!"
 authors = [
   "Reza (Shahin) Khanipour <shahin@datachef.co>",
@@ -35,7 +35,7 @@ types-confluent-kafka = "^1.2.2"
 chispa = "^0.10.1"
 
 [tool.commitizen]
-version = "0.5.1"
+version = "0.6.0"
 update_changelog_on_bump = true
 version_provider = "scm"
 tag_format = "v$version"
