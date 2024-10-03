@@ -1,3 +1,13 @@
+## v0.6.1 (2024-10-03)
+
+### Fix
+
+- KafkaReader and TableReader should inherit from base Reader class
+
+### Refactor
+
+- accept type[Writer] for main Sparkle interface
+
 ## v0.6.0 (2024-10-03)
 
 ### Feat
