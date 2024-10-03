@@ -23,7 +23,7 @@ class Sparkle(abc.ABC):
         self,
         config: Config,
         readers: dict[str, type[Reader]],
-        writers: list[Writer],
+        writers: list[type[Writer]],
         spark_extensions: list[str] | None = None,
         spark_packages: list[str] | None = None,
         extra_spark_config: dict[str, str] | None = None,
@@ -33,14 +33,13 @@ class Sparkle(abc.ABC):
         Args:
             config (Config): The configuration object containing application-specific settings.
             readers (dict[str, type[Reader]]): A dictionary of readers for input data, keyed by source name.
-            writers (list[Writer]): A list of Writer objects used to output processed data.
+            writers (list[type[Writer]]): A list of Writer objects used to output processed data.
             spark_extensions (list[str], optional): A list of Spark session extensions to apply.
             spark_packages (list[str], optional): A list of Spark packages to include in the session.
             extra_spark_config (dict[str, str], optional): Additional Spark configurations to
               merge with the default settings.
         """
         self.config = config
-        self.writers = writers
         self.readers = readers
         self.execution_env = config.execution_environment
         self.spark_config = config.get_spark_config(
@@ -50,6 +49,10 @@ class Sparkle(abc.ABC):
         self.spark_packages = config.get_spark_packages(spark_packages)
 
         self.spark_session = self.get_spark_session(self.execution_env)
+        self.writers: list[Writer] = [
+            writer_class.with_config(self.config, self.spark_session)
+            for writer_class in writers
+        ]
 
     def get_spark_session(self, env: ExecutionEnvironment) -> SparkSession:
         """Creates and returns a Spark session based on the environment.
