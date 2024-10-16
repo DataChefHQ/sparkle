@@ -1,6 +1,8 @@
 import json
+
 import pytest
 import responses
+
 from sparkle.reader.schema_registry import SchemaRegistry
 
 TEST_SCHEMA_REGISTRY = "http://test-schema-registry:8081"

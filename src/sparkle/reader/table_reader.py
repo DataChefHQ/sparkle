@@ -1,7 +1,8 @@
-from pyspark.sql import SparkSession, DataFrame
+from pyspark.sql import DataFrame, SparkSession
+
 from sparkle.config import Config
-from sparkle.utils.logger import logger
 from sparkle.reader import Reader
+from sparkle.utils.logger import logger
 
 
 class TableReader(Reader):

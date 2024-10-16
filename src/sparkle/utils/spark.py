@@ -1,8 +1,11 @@
-from sparkle.utils.logger import logger
-from pyspark.sql import SparkSession, functions as F, DataFrame
-from pyspark.sql.avro.functions import from_avro
-from sparkle.reader.schema_registry import SchemaRegistry
 from collections.abc import Callable
+
+from pyspark.sql import DataFrame, SparkSession
+from pyspark.sql import functions as F
+from pyspark.sql.avro.functions import from_avro
+
+from sparkle.reader.schema_registry import SchemaRegistry
+from sparkle.utils.logger import logger
 
 
 def table_exists(

@@ -1,7 +1,9 @@
+from enum import Enum
+
 import requests  # type: ignore
 from requests.auth import HTTPBasicAuth  # type: ignore
+
 from sparkle.config import Config
-from enum import Enum
 
 
 class SubjectNameStrategy(Enum):

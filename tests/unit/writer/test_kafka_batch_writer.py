@@ -38,7 +38,9 @@ def kafka_config(user_dataframe, checkpoint_directory) -> dict[str, Any]:
 def kafka_setup():
     """Create a Kafka topic and deletes it after the test."""
     kafka_client = AdminClient({"bootstrap.servers": BROKER_URL})
-    kafka_client.create_topics([NewTopic(TOPIC, num_partitions=1, replication_factor=1)])
+    kafka_client.create_topics(
+        [NewTopic(TOPIC, num_partitions=1, replication_factor=1)]
+    )
     yield
     kafka_client.delete_topics([TOPIC])
     logging.info("Deleted Kafka topic %s", TOPIC)
@@ -65,7 +67,9 @@ def test_kafka_batch_publisher_write(
         format_=SchemaFormat.raw,
         schema_version="latest",
         kafka_spark_options={
-            "kafka.bootstrap.servers": kafka_config["kafka_options"]["kafka.bootstrap.servers"],
+            "kafka.bootstrap.servers": kafka_config["kafka_options"][
+                "kafka.bootstrap.servers"
+            ],
             "startingOffsets": "earliest",
             "enable.auto.commit": True,
         },

@@ -1,9 +1,10 @@
+import os
 from dataclasses import dataclass
 from enum import Enum
-import os
-from .kafka_config import KafkaReaderConfig, KafkaWriterConfig
-from .iceberg_config import IcebergConfig
+
 from .database_config import TableConfig
+from .iceberg_config import IcebergConfig
+from .kafka_config import KafkaReaderConfig, KafkaWriterConfig
 
 
 class ExecutionEnvironment(Enum):
@@ -71,7 +72,7 @@ class Config:
 
     @staticmethod
     def get_generic_spark_config(
-        extra_config: dict[str, str] | None = None
+        extra_config: dict[str, str] | None = None,
     ) -> dict[str, str]:
         """Provides generic Spark configurations and allows merging with additional configurations.
 
@@ -93,7 +94,7 @@ class Config:
 
     @staticmethod
     def get_aws_spark_config(
-        extra_config: dict[str, str] | None = None
+        extra_config: dict[str, str] | None = None,
     ) -> dict[str, str]:
         """Provides AWS-specific Spark configurations and allows merging with additional configurations.
 

@@ -1,6 +1,6 @@
 import os
-from urllib.parse import urlparse
 from dataclasses import dataclass
+from urllib.parse import urlparse
 
 
 @dataclass

@@ -1,11 +1,12 @@
-from pyspark.sql import DataFrame, SparkSession, Column
+from pyspark.sql import Column, DataFrame, SparkSession
 from pyspark.sql.readwriter import DataFrameWriterV2
 from pyspark.sql.utils import AnalysisException
-from sparkle.writer.table_path import TablePath
+
 from sparkle.config import Config
 from sparkle.utils.logger import logger
 from sparkle.utils.spark import table_exists
 from sparkle.writer import Writer
+from sparkle.writer.table_path import TablePath
 
 
 class IcebergWriter(Writer):

@@ -34,7 +34,9 @@ def kafka_setup() -> Generator[str, None, None]:
     """
     admin_client = AdminClient({"bootstrap.servers": KAFKA_BROKER_URL})
 
-    admin_client.create_topics([NewTopic(TEST_TOPIC, num_partitions=1, replication_factor=1)])
+    admin_client.create_topics(
+        [NewTopic(TEST_TOPIC, num_partitions=1, replication_factor=1)]
+    )
 
     yield TEST_TOPIC
 
@@ -137,7 +139,9 @@ def produce_avro_message(
     string_serializer = StringSerializer("utf_8")
     producer.produce(
         topic=topic,
-        key=string_serializer(value["name"], SerializationContext(topic, MessageField.KEY)),
+        key=string_serializer(
+            value["name"], SerializationContext(topic, MessageField.KEY)
+        ),
         value=avro_serializer(value, SerializationContext(topic, MessageField.VALUE)),
     )
     producer.flush()

@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import Any
-from pyspark.sql import SparkSession, DataFrame
+
+from pyspark.sql import DataFrame, SparkSession
+
 from sparkle.config import Config
 
 

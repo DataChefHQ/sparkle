@@ -53,7 +53,9 @@ class KafkaStreamPublisher(Writer):
         self.trigger_once = trigger_once
 
     @classmethod
-    def with_config(cls, config: Config, spark: SparkSession, **kwargs: Any) -> "KafkaStreamPublisher":
+    def with_config(
+        cls, config: Config, spark: SparkSession, **kwargs: Any
+    ) -> "KafkaStreamPublisher":
         """Create a KafkaStreamPublisher object with a configuration.
 
         Args:
@@ -145,7 +147,9 @@ class KafkaBatchPublisher(Writer):
         self.unique_identifier_column_name = unique_identifier_column_name
 
     @classmethod
-    def with_config(cls, config: Config, spark: SparkSession, **kwargs: Any) -> "KafkaBatchPublisher":
+    def with_config(
+        cls, config: Config, spark: SparkSession, **kwargs: Any
+    ) -> "KafkaBatchPublisher":
         """Create a KafkaBatchPublisher object with a configuration.
 
         Args:
