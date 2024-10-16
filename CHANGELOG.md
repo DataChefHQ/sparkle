@@ -1,3 +1,10 @@
+## v0.6.2 (2024-10-16)
+
+### Refactor
+
+- apply ruff fix and format so CI tests pass
+- use ruff for lint and formatting (remove black)
+
 ## v0.6.1 (2024-10-03)
 
 ### Fix
