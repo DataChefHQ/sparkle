@@ -45,7 +45,7 @@ version_files = [
 ]
 
 [tool.ruff]
-line-length = 120
+line-length = 88
 target-version = "py310"
 
 [tool.ruff.lint]
@@ -53,9 +53,10 @@ select = [
   "E",  # pycodestyle
   "F",  # pyflakes
   "UP", # pyupgrade
-  "D"   # pydocstyle
+  "D",  # pydocstyle
+  "I"   # isort
 ]
-ignore = ["D100", "D104"]
+ignore = ["D100", "D104", "E501"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
