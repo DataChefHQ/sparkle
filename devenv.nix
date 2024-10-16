@@ -28,6 +28,9 @@ in
     cat.exec = "bat $@";
 
     release = {
+      # This script is temporary due to two problems:
+      #  1. `cz` requires a personal github token to publish a release https://commitizen-tools.github.io/commitizen/tutorials/github_actions/
+      #  2. `cz bump` fails to sign in a terminal: https://github.com/commitizen-tools/commitizen/issues/1184
       exec = ''
         rm CHANGELOG.md
         cz bump --files-only --check-consistency
