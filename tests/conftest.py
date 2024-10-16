@@ -50,7 +50,11 @@ def spark_session() -> SparkSession:
     for key, value in LOCAL_CONFIG.items():
         spark_conf.set(key, str(value))
 
-    spark_session = SparkSession.builder.master("local[*]").appName("LocalTestSparkleApp").config(conf=spark_conf)
+    spark_session = (
+        SparkSession.builder.master("local[*]")
+        .appName("LocalTestSparkleApp")
+        .config(conf=spark_conf)
+    )
 
     if ivy_settings_path:
         spark_session.config("spark.jars.ivySettings", ivy_settings_path)
@@ -157,7 +161,9 @@ def json_to_string(dictionary: dict[str, Any]) -> str:
     ).replace("\n", "")
 
 
-def log_spark_dataframe(df: DataFrame, *, truncate: bool = False, name: str = "") -> None:
+def log_spark_dataframe(
+    df: DataFrame, *, truncate: bool = False, name: str = ""
+) -> None:
     """Logs the contents of a Spark DataFrame in tabular format.
 
     Useful when Pytest is configured to capture only logs, so `df.show()` won't work.

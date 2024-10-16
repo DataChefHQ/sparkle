@@ -106,8 +106,12 @@ def test_read_table(spark_session, test_db_path):
         test_db_path (str): Path to the test database.
     """
     # Create a sample table for testing
-    spark_session.sql(f"CREATE TABLE {CATALOG}.{TEST_DB}.{TEST_TABLE} (id INT, name STRING)")
-    spark_session.sql(f"INSERT INTO {CATALOG}.{TEST_DB}.{TEST_TABLE} VALUES (1, 'Alice'), (2, 'Bob')")
+    spark_session.sql(
+        f"CREATE TABLE {CATALOG}.{TEST_DB}.{TEST_TABLE} (id INT, name STRING)"
+    )
+    spark_session.sql(
+        f"INSERT INTO {CATALOG}.{TEST_DB}.{TEST_TABLE} VALUES (1, 'Alice'), (2, 'Bob')"
+    )
 
     reader = TableReader(
         spark=spark_session,

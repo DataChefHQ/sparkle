@@ -1,6 +1,9 @@
 from __future__ import annotations
+
 from abc import ABC, abstractmethod
-from pyspark.sql import SparkSession, DataFrame
+
+from pyspark.sql import DataFrame, SparkSession
+
 from sparkle.config import Config
 
 

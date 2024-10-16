@@ -1,10 +1,12 @@
 from typing import Any
-from pyspark.sql import SparkSession, DataFrame
+
+from pyspark.sql import DataFrame, SparkSession
+
 from sparkle.config import Config
 from sparkle.config.kafka_config import SchemaFormat
+from sparkle.reader import Reader
 from sparkle.reader.schema_registry import SchemaRegistry
 from sparkle.utils.spark import parse_by_avro
-from sparkle.reader import Reader
 
 
 class KafkaReader(Reader):
@@ -76,7 +78,7 @@ class KafkaReader(Reader):
             spark=spark,
             topic=config.kafka_input.kafka_topic,
             schema_registry=schema_registry,
-            **kwargs
+            **kwargs,
         )
 
     def read_raw(self) -> DataFrame:

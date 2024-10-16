@@ -77,7 +77,9 @@ def test_generate_kafka_acceptable_dataframe(user_dataframe: DataFrame, spark_se
             ),
         },
     ]
-    expected_df = spark_session.createDataFrame(expected_result, schema=["key", "value"])
+    expected_df = spark_session.createDataFrame(
+        expected_result, schema=["key", "value"]
+    )
 
     actual_df = to_kafka_dataframe("email", user_dataframe)
 

@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from enum import Enum
 from typing import Any
+
 from sparkle.reader import Reader
 
 

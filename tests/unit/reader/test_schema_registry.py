@@ -1,6 +1,8 @@
 import json
+
 import pytest
 import responses
+
 from sparkle.reader.schema_registry import SchemaRegistry
 
 TEST_SCHEMA_REGISTRY = "http://test-schema-registry:8081"
@@ -89,6 +91,8 @@ def test_put_schema(schema_api_response):
         status=200,
     )
 
-    schema_id = SchemaRegistry(TEST_SCHEMA_REGISTRY).put_schema("test", TEST_SCHEMA)
+    schema_id = SchemaRegistry(TEST_SCHEMA_REGISTRY).put_schema(
+        "test", json.dumps(TEST_SCHEMA)
+    )
 
     assert schema_id == 1

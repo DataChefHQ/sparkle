@@ -12,7 +12,6 @@ let
       pip
       python-lsp-server
       epc
-      black
       pylint
     ];
   compose-path = "./tests/docker-compose.yml";
@@ -24,55 +23,66 @@ in
     GREET = "🛠️ Let's hack ";
   };
 
-  # https://devenv.sh/scripts/
-  scripts.hello.exec = "echo $GREET";
-  scripts.cat.exec = ''
-    bat "$@";
-  '';
+  scripts = {
+    hello.exec = "echo $GREET";
+    cat.exec = "bat $@";
 
-  # This script is temporary due to two problems:
-  #  1. `cz` requires a personal github token to publish a release https://commitizen-tools.github.io/commitizen/tutorials/github_actions/
-  #  2. `cz bump` fails to sign in a terminal: https://github.com/commitizen-tools/commitizen/issues/1184
-  scripts.release = {
-    exec = ''
-      rm CHANGELOG.md
-      cz bump --files-only --check-consistency
-      git tag $(python -c "from src.sparkle import __version__; print(__version__)")
-    '';
-    description = ''
-      Release a new version and update the CHANGELOG.
-    '';
+    release = {
+      # This script is temporary due to two problems:
+      #  1. `cz` requires a personal github token to publish a release https://commitizen-tools.github.io/commitizen/tutorials/github_actions/
+      #  2. `cz bump` fails to sign in a terminal: https://github.com/commitizen-tools/commitizen/issues/1184
+      exec = ''
+        rm CHANGELOG.md
+        cz bump --files-only --check-consistency
+        git tag $(python -c "from src.sparkle import __version__; print(__version__)")
+      '';
+      description = ''
+        Release a new version and update the CHANGELOG.
+      '';
+    };
+
+    up = {
+      exec = "devenv up -d";
+      description = "Start processes in the background.";
+    };
+
+    down = {
+      exec = "devenv processes down";
+      description = "Stop processes.";
+    };
+
+    cleanup = {
+      exec = "docker compose -f ${compose-path} rm -vf";
+      description = "Remove unused docker containers and volumes.";
+    };
+
+    pyfix = {
+      exec = "ruff check . --fix && ruff format .";
+      description = "Lint, (possibly) fix and apply formatting to python files.";
+    };
+
+    show = {
+      exec = ''
+        GREEN="\033[0;32m";
+        YELLOW="\033[33m";
+        NC="\033[0m";
+        echo
+        echo -e "✨ Helper scripts you can run to make your development richer:"
+        echo
+
+        ${pkgs.gnused}/bin/sed -e 's| |••|g' -e 's|=| |' <<EOF | ${pkgs.util-linuxMinimal}/bin/column -t | ${pkgs.gnused}/bin/sed -e "s|^\([^ ]*\)|$(printf "$GREEN")\1$(printf "$NC"):    |" -e "s|^|$(printf "$YELLOW*$NC") |" -e 's|••| |g'
+        ${lib.generators.toKeyValue { } (
+          lib.mapAttrs (name: value: value.description) (
+            lib.filterAttrs (_: value: value.description != "") config.scripts
+          )
+        )}
+        EOF
+
+        echo
+      '';
+      description = "Print this message and exit.";
+    };
   };
-
-  # convenient shortcuts
-  scripts.up.exec = "devenv up -d";
-  scripts.up.description = "Start processes in the background.";
-
-  scripts.down.exec = "devenv processes down";
-  scripts.down.description = "Stop processes.";
-
-  scripts.cleanup.exec = "docker compose -f ${compose-path} rm -vf";
-  scripts.cleanup.description = "Remove unused docker containers and volumes.";
-
-  scripts.show.exec = ''
-    GREEN="\033[0;32m";
-    YELLOW="\033[33m";
-    NC="\033[0m";
-    echo
-    echo -e "✨ Helper scripts you can run to make your development richer:"
-    echo
-
-    ${pkgs.gnused}/bin/sed -e 's| |••|g' -e 's|=| |' <<EOF | ${pkgs.util-linuxMinimal}/bin/column -t | ${pkgs.gnused}/bin/sed -e "s|^\([^ ]*\)|$(printf "$GREEN")\1$(printf "$NC"):    |" -e "s|^|$(printf "$YELLOW*$NC") |" -e 's|••| |g'
-    ${lib.generators.toKeyValue { } (
-      lib.mapAttrs (name: value: value.description) (
-        lib.filterAttrs (_: value: value.description != "") config.scripts
-      )
-    )}
-    EOF
-
-    echo
-  '';
-  scripts.show.description = "Print this message and exit.";
 
   # https://devenv.sh/packages/
   packages = with pkgs; [
