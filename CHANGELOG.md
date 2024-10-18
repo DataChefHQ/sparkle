@@ -1,3 +1,9 @@
+## v0.6.3 (2024-10-18)
+
+### Fix
+
+- include utils as a package
+
 ## v0.6.2 (2024-10-16)
 
 ### Refactor
