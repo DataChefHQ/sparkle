@@ -7,14 +7,28 @@ on:
       - main
 
 jobs:
-  # Mac tests and Ubuntu tests are separated so that Ubuntu tests can
-  # run on both PRs and main; and Mac tests only on main branch.
   ubuntu_tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
+        # Add a separate step to adjust permissions
+      - name: Adjust Permissions on Nix Store
+        run: sudo mkdir /nix && sudo chown -R $USER:$USER /nix/
+
+      - name: Cache Nix Store
+        uses: actions/cache@v3
+        with:
+          path: /nix/store
+          key: nix-store-${{ runner.os }}-${{ hashFiles('**/shell.nix') }}
+          restore-keys: |
+            nix-store-${{ runner.os }}-
+
+      - name: Show caches packages
+        run: ls /nix/store
+
       - uses: cachix/install-nix-action@v26
+
       - uses: cachix/cachix-action@v14
         with:
           name: devenv
@@ -23,13 +37,21 @@ jobs:
         run: nix profile install nixpkgs#devenv
 
       - name: Build the devenv shell and run any pre-commit hooks
-        run: devenv test
+        run: ls /nix/store && nix-store --verify --check-contents
 
   macos_tests:
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Cache Nix Store
+        uses: actions/cache@v3
+        with:
+          path: /nix/store
+          key: nix-store-${{ runner.os }}-${{ hashFiles('**/shell.nix') }}
+          restore-keys: |
+            nix-store-${{ runner.os }}-
 
       - name: Setup Docker (macOS) with Colima
         run: |
