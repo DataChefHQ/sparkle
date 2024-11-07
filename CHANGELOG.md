@@ -1,3 +1,11 @@
+## v0.6.4 (2024-11-07)
+
+### Refactor
+
+- use Cachix
+- use Cachix
+- add cache to CI
+
 ## v0.6.3 (2024-10-18)
 
 ### Fix
