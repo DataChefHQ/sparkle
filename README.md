@@ -14,6 +14,8 @@ With these goals in mind, Sparkle has enabled DataChef to deliver
 functional data products from day one, allowing for seamless handovers
 to internal teams.
 
+Read more about Sparkle on [DataChef's blog!](https://blog.datachef.co/sparkle-accelerating-data-engineering-with-datachefs-meta-framework)
+
 ## Key Features
 
 ### 1. Improved Developer Experience 🚀
@@ -64,6 +66,87 @@ these DataFrames according to the business logic. The Sparkle
 application then automatically writes the output of this
 transformation to the desired destination.
 
+Sparkle follows a streamlined approach, designed to reduce effort in
+data transformation workflows. Here’s how it works:
+
+1. **Specify Input Locations and Types**: Easily set up input locations
+and types for your data. Sparkle’s configuration makes this effortless,
+removing typical setup hurdles and letting you get started
+with minimal overhead.
+
+    ```python
+    ...
+    config=Config(
+      ...,
+      kafka_input=KafkaReaderConfig(
+                        KafkaConfig(
+                            bootstrap_servers="localhost:9119",
+                            credentials=Credentials("test", "test"),
+                        ),
+                        kafka_topic="src_orders_v1",
+                    )
+    ),
+    readers={"orders": KafkaReader},
+    ...
+    ```
+
+2. **Define Business Logic**: This is where developers spend most of their time.
+Using Sparkle, you create transformations on input DataFrames, shaping data
+according to your business needs.
+
+    ```python
+    # Override process function from parent class
+    def process(self) -> DataFrame:
+            return self.input["orders"].read().join(
+                self.input["users"].read()
+            )
+    ```
+
+3. **Specify Output Locations**: Sparkle automatically writes transformed data to
+the specified output location, streamlining the output step to make data
+available wherever it’s needed.
+
+    ```python
+    ...
+    config=Config(
+      ...,
+      iceberg_output=IcebergConfig(
+                        database_name="all_products",
+                        table_name="orders_v1",
+                    ),
+    ),
+    writers=[IcebergWriter],
+    ...
+    ```
+
+
+This structure lets developers concentrate on meaningful transformations while
+Sparkle takes care of configurations, testing, and output management.
+
+## Connectors 🔌
+
+Sparkle offers specialized connectors for common data sources and sinks,
+making data integration easier. These connectors are designed to
+enhance—not replace—the standard Spark I/O options,
+streamlining development by automating complex setup requirements.
+
+### Readers
+
+1. **Iceberg Reader**: Simplifies reading from Iceberg tables,
+making integration with Spark workflows a breeze.
+
+2. **Kafka Reader (with Avro schema registry)**: Ingest streaming data
+from Kafka with seamless Avro schema registry integration, supporting
+data consistency and schema evolution.
+
+### Writers
+
+1. **Iceberg Writer**: Easily write transformed data to Iceberg tables,
+ideal for time-traveling, partitioned data storage.
+
+2. **Kafka Writer**: Publish data to Kafka topics with ease, supporting
+real-time analytics and downstream consumers.
+
 ## Getting Started 🚀
 
 Sparkle is currently under heavy development, and we are continuously
@@ -72,6 +155,50 @@ working on improving and expanding its capabilities.
 To stay updated on our progress and access the latest information,
 follow us on [LinkedIn](https://nl.linkedin.com/company/datachefco)
 and [GitHub](https://github.com/DataChefHQ/Sparkle).
+
+## Example
+
+This is the simplest example to create a Orders pipelines by reading records
+from a Kafka topic and writing it to an Iceberg table:
+
+```python
+from sparkle.config import Config, IcebergConfig, KafkaReaderConfig
+from sparkle.config.kafka_config import KafkaConfig, Credentials
+from sparkle.writer.iceberg_writer import IcebergWriter
+from sparkle.application import Sparkle
+from sparkle.reader.kafka_reader import KafkaReader
+
+from pyspark.sql import DataFrame
+
+
+class CustomerOrders(Sparkle):
+  def __init__(self):
+      super().__init__(
+          config=Config(
+              app_name="orders",
+              app_id="orders-app",
+              version="0.0.1",
+              database_bucket="s3://test-bucket",
+              checkpoints_bucket="s3://test-checkpoints",
+              iceberg_output=IcebergConfig(
+                  database_name="all_products",
+                  table_name="orders_v1",
+              ),
+              kafka_input=KafkaReaderConfig(
+                  KafkaConfig(
+                      bootstrap_servers="localhost:9119",
+                      credentials=Credentials("test", "test"),
+                  ),
+                  kafka_topic="src_orders_v1",
+              ),
+          ),
+          readers={"orders": KafkaReader},
+          writers=[IcebergWriter],
+      )
+
+  def process(self) -> DataFrame:
+      return self.input["orders"].read()
+```
 
 ## Contributing 🤝
 
